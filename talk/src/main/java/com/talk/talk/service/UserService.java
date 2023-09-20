@@ -9,6 +9,7 @@ import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,14 +20,15 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final PasswordEncoder passwordEncoder;
     /**
      * 회원가입
      * */
     public SignUpResDto signUp(SignUpReqDto request) {
+
         User userEntity = User.builder()
                 .id(request.getId())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword())) // 패스워드 암호화
                 .nickname(request.getNickname())
                 .name(request.getName())
                 .email(request.getEmail())
@@ -44,10 +46,15 @@ public class UserService {
      * 로그인
      * */
     public LoginResDto login(LoginReqDto request) {
-        Optional<User> optUser = userRepository.findById(request.getId());
-        if(optUser.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
-        User user = optUser.get();
-        if(user.getPassword() == null || !user.getPassword().equals(request.getPassword())) throw new IllegalArgumentException(ExceptionEnum.NOT_MATCHED_PASSWORD.getCode());
+
+        // 1. 고객 존재 여부 체크
+        User user = userRepository.findById(request.getId()).orElseThrow(() ->
+                new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode())
+        );
+
+        // 2. 패스워드 체크
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword()))
+            throw new IllegalArgumentException(ExceptionEnum.NOT_MATCHED_PASSWORD.getCode());
 
         return LoginResDto.builder()
                 .name(user.getName())
