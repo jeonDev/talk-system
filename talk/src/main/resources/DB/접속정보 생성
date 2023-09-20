@@ -1,0 +1,10 @@
+/* 여기부터 계정 생성 */
+create database talk default character set UTF8;
+
+CREATE USER talk@'%' IDENTIFIED BY 'talk' ;
+
+grant all privileges on talk.* to 'talk'@'%';
+
+FLUSH PRIVILEGES;
+/* 여기까지 */
+
