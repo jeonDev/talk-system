@@ -3,7 +3,7 @@ package com.talk.talk.controller;
 import com.talk.talk.common.vo.ApiResponse;
 import com.talk.talk.service.UserService;
 import com.talk.talk.vo.login.login.LoginReqDto;
-import com.talk.talk.vo.login.login.LoginResDto;
+import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +33,8 @@ public class LoginController {
     * 로그인
     * */
     @PostMapping("/login")
-    public ApiResponse<LoginResDto> login(@RequestBody LoginReqDto request) {
-        LoginResDto result = userService.login(request);
+    public ApiResponse<UserDto> login(@RequestBody LoginReqDto request) {
+        UserDto result = userService.login(request);
 
         return new ApiResponse(result);
     }

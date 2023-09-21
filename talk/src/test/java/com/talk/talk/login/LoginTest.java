@@ -4,7 +4,7 @@ import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
 import com.talk.talk.service.UserService;
 import com.talk.talk.vo.login.login.LoginReqDto;
-import com.talk.talk.vo.login.login.LoginResDto;
+import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,8 @@ public class LoginTest {
         request.setId("testUser");
         request.setPassword("testPassword");
         // when
-        LoginResDto login = userService.login(request);
+        UserDto login = userService.login(request);
+        System.out.println(login.getTokenInfo().getToken());
         // then
         assertThat(login.getName()).isEqualTo("테스트1");
     }

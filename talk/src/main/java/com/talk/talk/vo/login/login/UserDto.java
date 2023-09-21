@@ -1,5 +1,6 @@
 package com.talk.talk.vo.login.login;
 
+import com.talk.talk.common.vo.TokenInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,16 +10,16 @@ import lombok.NoArgsConstructor;
  * */
 @Getter
 @NoArgsConstructor
-public class LoginResDto {
+public class UserDto {
 
-    private String token;
     private String name;
     private String nickname;
+    private TokenInfo tokenInfo;
 
     @Builder
-    public LoginResDto(String token, String name, String nickname) {
-        this.token = token;
+    public UserDto(String name, String nickname, TokenInfo tokenInfo) {
         this.name = name;
         this.nickname = nickname;
+        this.tokenInfo = tokenInfo;
     }
 }
