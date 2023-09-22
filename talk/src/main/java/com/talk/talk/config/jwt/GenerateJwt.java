@@ -2,6 +2,8 @@ package com.talk.talk.config.jwt;
 
 import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.domain.user.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -45,5 +47,17 @@ public class GenerateJwt {
         return TokenInfo.builder()
                 .token(accessToken)
                 .build();
+    }
+
+    /**
+     * Jwt Get Subject Info
+     * */
+    public String getTokenForSubject(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 }

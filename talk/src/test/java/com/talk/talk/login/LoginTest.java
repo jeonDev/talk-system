@@ -1,5 +1,6 @@
 package com.talk.talk.login;
 
+import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
 import com.talk.talk.service.UserService;
@@ -25,6 +26,9 @@ public class LoginTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GenerateJwt generateJwt;
 
     // TODO: 회원가입 한 고객 삭제 안되게 처리 해야 함.
     @Test
@@ -79,5 +83,20 @@ public class LoginTest {
         assertThrows(IllegalArgumentException.class, () -> {
             userService.login(request);
         });
+    }
+
+    @Test
+    void 토큰발급_정보추출() {
+        // given
+        LoginReqDto request = new LoginReqDto();
+        request.setId("testUser");
+        request.setPassword("testPassword");
+        // when
+        UserDto login = userService.login(request);
+        String token = login.getTokenInfo().getToken();
+        String jwtToken = generateJwt.getTokenForSubject(token);
+        Optional<User> user = userRepository.findById(request.getId());
+        // then
+        assertThat(user.get().getUserSeq().toString()).isEqualTo(jwtToken);
     }
 }
