@@ -1,7 +1,6 @@
-package com.talk.talk.common.vo;
+package com.talk.talk.config.vo;
 
 import lombok.*;
-import org.springframework.http.HttpStatus;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter

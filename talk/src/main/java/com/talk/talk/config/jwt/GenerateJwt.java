@@ -1,6 +1,6 @@
 package com.talk.talk.config.jwt;
 
-import com.talk.talk.common.vo.TokenInfo;
+import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.domain.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

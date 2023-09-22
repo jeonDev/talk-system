@@ -1,4 +1,4 @@
-package com.talk.talk.common.vo;
+package com.talk.talk.config.vo;
 
 import lombok.Builder;
 import lombok.Getter;

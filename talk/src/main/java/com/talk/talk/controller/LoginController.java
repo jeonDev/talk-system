@@ -1,6 +1,6 @@
 package com.talk.talk.controller;
 
-import com.talk.talk.common.vo.ApiResponse;
+import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.service.UserService;
 import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;

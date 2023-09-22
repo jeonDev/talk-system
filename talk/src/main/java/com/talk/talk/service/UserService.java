@@ -1,7 +1,7 @@
 package com.talk.talk.service;
 
-import com.talk.talk.common.exception.ExceptionEnum;
-import com.talk.talk.common.vo.TokenInfo;
+import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;

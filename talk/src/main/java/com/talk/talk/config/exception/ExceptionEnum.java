@@ -1,4 +1,4 @@
-package com.talk.talk.common.exception;
+package com.talk.talk.config.exception;
 
 import lombok.Getter;
 
