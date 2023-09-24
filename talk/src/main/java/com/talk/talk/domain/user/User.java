@@ -1,16 +1,17 @@
 package com.talk.talk.domain.user;
 
 import com.talk.talk.domain.BaseTimeEntity;
+import com.talk.talk.domain.roomUser.RoomUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "USER")
 public class User extends BaseTimeEntity {
@@ -36,4 +37,7 @@ public class User extends BaseTimeEntity {
 
     @Column(name = "EMAIL", length = 100)
     private String email;
+
+    @OneToMany(mappedBy = "userSeq")
+    private List<RoomUser> roomUsers = new ArrayList<>();
 }
