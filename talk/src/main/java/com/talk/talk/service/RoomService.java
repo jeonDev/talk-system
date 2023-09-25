@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class RoomService {
-
+    private final static Integer ROOM_USER_MAX_SIZE = 30; // 채팅방 최대 인원 수
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
     private final UserRepository userRepository;
@@ -36,10 +36,15 @@ public class RoomService {
     @Transactional
     public RoomInviteResDto roomInvite(List<RoomInviteReqDto> request) {
 
+        // 최대인원 체크
+        if(request.size() > ROOM_USER_MAX_SIZE) throw new IllegalArgumentException(ExceptionEnum.OVER_INVITE_SIZE.getCode());
+
+        // 방 생성
         Room room = roomRepository.saveAndFlush(Room.builder().build());
 
         List<RoomUser> roomUsers = new ArrayList<RoomUser>();
 
+        // 사용자 초대
         for(RoomInviteReqDto reqUser : request) {
             Optional<User> user = userRepository.findById(reqUser.getUserSeq());
             if(user.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
