@@ -2,11 +2,10 @@ package com.talk.talk.config.jwt;
 
 import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.domain.user.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +23,7 @@ import java.util.Date;
 @Component
 public class GenerateJwt {
 
+    private static final String BEARER_TYPE = "Bearer";
     private final Key key;
     private final Long EXPIRATION_TIME = 86400000L;
 
@@ -59,5 +59,12 @@ public class GenerateJwt {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public String resolveAccessToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if(authorization == null || !authorization.startsWith(BEARER_TYPE)) return null;
+
+        return authorization.substring(BEARER_TYPE.toString().length() + 1, authorization.length());
     }
 }
