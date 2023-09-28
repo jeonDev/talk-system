@@ -18,9 +18,22 @@ public class HandlerException {
                 , e.getMessage()
         );
 
-        ApiResponse response = ApiResponse.builder()
+        ApiResponse<?> response = ApiResponse.builder()
                 .status(e.getCode())
                 .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> apiExceptionHandler(final Exception e) {
+        log.error("Exception : {}"
+                , e.getMessage()
+        );
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .status(e.getMessage())
+                .message(ExceptionEnum.getMessage(e.getMessage()).getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
