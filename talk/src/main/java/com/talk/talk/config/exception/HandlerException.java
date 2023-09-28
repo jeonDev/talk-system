@@ -17,7 +17,12 @@ public class HandlerException {
                 , e.getCode()
                 , e.getMessage()
         );
-        return new ResponseEntity<>(new ApiResponse<>(e), HttpStatus.OK);
+
+        ApiResponse response = ApiResponse.builder()
+                .status(e.getCode())
+                .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

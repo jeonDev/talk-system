@@ -26,7 +26,9 @@ public class LoginController {
     public ApiResponse<SignUpResDto> signUp(@RequestBody SignUpReqDto request) {
         SignUpResDto result = userService.signUp(request);
 
-        return new ApiResponse(result);
+        return ApiResponse.<SignUpResDto>builder()
+                .data(result)
+                .build();
     }
 
     /**
@@ -35,7 +37,8 @@ public class LoginController {
     @PostMapping("/login")
     public ApiResponse<UserDto> login(@RequestBody LoginReqDto request) {
         UserDto result = userService.login(request);
-
-        return new ApiResponse(result);
+        return ApiResponse.<UserDto>builder()
+                .data(result)
+                .build();
     }
 }

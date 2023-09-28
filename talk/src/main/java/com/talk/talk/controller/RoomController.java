@@ -30,6 +30,8 @@ public class RoomController {
         // TODO: 본인 아이디 request add
         RoomInviteResDto result = roomService.roomInvite(request);
 
-        return new ApiResponse<>(result);
+        return ApiResponse.<RoomInviteResDto>builder()
+                .data(result)
+                .build();
     }
 }

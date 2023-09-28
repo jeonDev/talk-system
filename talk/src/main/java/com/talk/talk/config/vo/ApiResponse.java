@@ -1,6 +1,5 @@
 package com.talk.talk.config.vo;
 
-import com.talk.talk.config.exception.ApiException;
 import lombok.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -10,21 +9,11 @@ public class ApiResponse<T> {
     private T data;
     private String message;
 
-    public ApiResponse(ApiException e) {
-        this.status = e.getCode();
-        this.message = e.getMessage();
-    }
-    public ApiResponse(T data) {
-        new ApiResponse("Success", data, "정상 처리되었습니다.");
-    }
 
+    @Builder
     public ApiResponse(String status, T data, String message) {
-        this.status = status;
+        this.status = status != null ? status : "SUCCESS";
         this.data = data;
-        this.message = message;
-    }
-
-    public ApiResponse(T data, String message) {
-        new ApiResponse("Success", data, message);
+        this.message = message != null ? message : "정상 처리되었습니다.";
     }
 }
