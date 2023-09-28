@@ -14,7 +14,7 @@ export async function login(request) {
 
 export async function signup(request) {
     return await client
-        .post("/signup", request)
+        .post("/login/signup", request)
         .then((res) => {
             return res;
         })

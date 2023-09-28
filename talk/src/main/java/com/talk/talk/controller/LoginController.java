@@ -22,7 +22,7 @@ public class LoginController {
     /**
     * 회원가입
     * */
-    @PostMapping("/login/singUp")
+    @PostMapping("/login/signup")
     public ApiResponse<SignUpResDto> signUp(@RequestBody SignUpReqDto request) {
         SignUpResDto result = userService.signUp(request);
 
