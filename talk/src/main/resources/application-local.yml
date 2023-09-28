@@ -22,3 +22,6 @@ logging:
 
 jwt:
   secret: dKWtZatJnhtqIOyd7OqsGMjZhjIrTyyqQzh9LPcUvu5Ynapz
+
+cors:
+  url: http://localhost:8080
