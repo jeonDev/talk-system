@@ -67,7 +67,7 @@ public class UserService {
         TokenInfo token = generateJwt.generateToken(user);
 
         // 4. Cookie 에 Token 정보 Set
-        Cookie cookie = new Cookie("accessToken", token.getToken());
+        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
         cookie.setMaxAge(60*60);
         cookie.setHttpOnly(true);
         cookie.setPath("/");

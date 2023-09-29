@@ -26,6 +26,7 @@ public class GenerateJwt {
     private static final String BEARER_TYPE = "Bearer";
     private final Key key;
     private final Long EXPIRATION_TIME = 86400000L;
+    private final Long REFRESH_EXPIRATION_TIME = 86400000L;
 
     @Autowired
     public GenerateJwt(@Value("${jwt.secret}") String secretKey) {
@@ -44,8 +45,16 @@ public class GenerateJwt {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
+        String refreshToken = Jwts.builder()
+                .setSubject(user.getUserSeq().toString())
+                .setExpiration(new Date(new Date().getTime() + REFRESH_EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
         return TokenInfo.builder()
+                .grantType(BEARER_TYPE)
                 .token(accessToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
