@@ -26,7 +26,7 @@ public class HandlerException {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> apiExceptionHandler(final Exception e) {
+    public ResponseEntity<?> exceptionHandler(final Exception e) {
         log.error("Exception : {}"
                 , e.getMessage()
         );
