@@ -4,7 +4,7 @@ import com.talk.talk.config.jwt.security.UserDetails;
 import lombok.*;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserInfo implements UserDetails {

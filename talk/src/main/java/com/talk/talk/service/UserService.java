@@ -81,7 +81,7 @@ public class UserService {
     }
 
     /** 인증 여부 체크 */
-    public UserDetails selectValidUserInfo(String id) {
+    public UserDetails selectValidUserInfo(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ApiException(ExceptionEnum.NOT_EXISTS_USER.getCode(), ExceptionEnum.NOT_EXISTS_USER.getMessage()));
 
         return UserInfo.builder()

@@ -24,7 +24,10 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Request URI : ", request.getRequestURI());
         String accessToken = generateJwt.resolveAccessToken(request);
-        Authentication authentication = jwtUtils.getAuthentication(accessToken);
-        TalkSecurityContextHolder.getContext().setAuthentication(authentication);
+        if(accessToken != null) {
+            Authentication authentication = jwtUtils.getAuthentication(accessToken);
+            TalkSecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        filterChain.doFilter(request, response);
     }
 }

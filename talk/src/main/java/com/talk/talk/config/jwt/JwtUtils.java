@@ -20,15 +20,18 @@ public class JwtUtils {
 
     /** 로그인 정보 가져오기 */
     public static UserInfo getUserInfo() {
+        UserInfo userInfo = new UserInfo();
         Authentication authentication = TalkSecurityContextHolder.getContext().getAuthentication();
-        // TODO:
-        return null;
+        if(authentication.getAuthentication() instanceof UserInfo) {
+            userInfo = (UserInfo) authentication.getAuthentication();
+        }
+        return userInfo;
     }
 
     /** Authentication 객체 반환 */
     public Authentication getAuthentication(String accessToken) {
         String subject = generateJwt.getTokenForSubject(accessToken);
-        UserDetails userDetails = userService.selectValidUserInfo(subject);
+        UserDetails userDetails = userService.selectValidUserInfo(Long.parseLong(subject));
         return new TalkAuthentication(userDetails);
     }
 }

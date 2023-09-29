@@ -7,7 +7,10 @@ public class TalkRequestContextHolder implements RequestContextHolder {
     @Override
     public ContextHolder getContextHolder() {
         ContextHolder ch = contextHolder.get();
-        if(ch == null) this.setContextHolder(new TalkContextHolder());
+        if(ch == null) {
+            this.setContextHolder(new TalkContextHolder());
+            ch = contextHolder.get();
+        }
         return ch;
     }
 
