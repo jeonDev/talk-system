@@ -1,27 +1,45 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/signup">SignUp</router-link>
+    <div class="talk-bg">
+      <!-- Login Before  -->
+      <div class="talk-app">
+        <div class="talk-app-main">
+          <LoginBefore/>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 
+import LoginBefore from "@/components/layout/LoginBefore.vue";
+
 export default {
   name: 'App',
   components: {
+    LoginBefore
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.talk-bg {
+  width: 100vw;
+  height: 100vh;
+  background-color: #B4B4B3;
+}
+.talk-app {
+  height: 100%;
+  margin: auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  max-width: 500px;
+  background-color: #EBE4D1;
+}
+.talk-app-main {
+  width: 90%;
+  margin: auto;
 }
 </style>

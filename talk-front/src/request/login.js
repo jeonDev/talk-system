@@ -8,7 +8,7 @@ export async function login(request) {
             return res.data;
         })
         .catch((err) => {
-            return err;
+            return err.response.data;
         })
 }
 
@@ -19,6 +19,6 @@ export async function signup(request) {
             return res.data;
         })
         .catch((err) => {
-            return err;
+            return err.response.data;
         })
 }

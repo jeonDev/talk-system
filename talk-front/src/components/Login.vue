@@ -3,24 +3,35 @@
     <b-form-input
         v-model="loginRequest.id"
         type="text"
+        class="mb-1"
         placeholder="ID"
+        maxlength="16"
     />
     <b-form-input
         v-model="loginRequest.password"
         type="password"
+        class="mb-1"
         placeholder="PASSWORD"
+        maxlength="20"
     />
     <b-button
-        variant="primary"
+        class="w-100"
+        variant="outline-success"
         @click="loginClick"
     >
       Login
     </b-button>
+
+    <b-modal v-model="modal.isShow">
+      [{{modal.code}}] {{modal.message}}
+    </b-modal>
+
   </div>
 </template>
 
 <script>
 import {login} from "@/request/login";
+import {checkId, checkPassword, MessageEnum} from "@/utils/utils";
 
 export default {
   name: 'LoginView',
@@ -29,17 +40,44 @@ export default {
       loginRequest : {
         id: '',
         password: ''
+      },
+      modal : {
+        code: '',
+        message: '',
+        isShow: false
       }
     }
   },
   methods: {
     async loginClick() {
+      // 정규식 체크
+      if(!checkId(this.loginRequest.id)) {
+        this.setErrorMsg('ID_CHECK', MessageEnum.ID_CHECK);
+        return;
+      } else if (!checkPassword(this.loginRequest.password)) {
+        this.setErrorMsg('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK);
+        return;
+      }
+      // login 요청
       const res = await login(this.loginRequest);
       if(res.status === 'SUCCESS') {
         const accessToken = res.data.tokenInfo.token;
         sessionStorage.setItem('Authorization', accessToken);
         console.log(sessionStorage.getItem('Authorization'))
+      } else {
+        this.setErrorMsg(res.status, res.message)
       }
+    },
+    setErrorMsg(code, message) {
+      this.modal.code = code;
+      this.modal.message = message;
+      this.showModal();
+    },
+    showModal() {
+      this.modal.isShow = true;
+    },
+    hideModal() {
+      this.modal.isShow = false;
     }
   }
 }
