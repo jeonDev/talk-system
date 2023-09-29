@@ -6,6 +6,7 @@ import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +36,8 @@ public class LoginController {
     * 로그인
     * */
     @PostMapping("/login")
-    public ApiResponse<UserDto> login(@RequestBody LoginReqDto request) {
-        UserDto result = userService.login(request);
+    public ApiResponse<UserDto> login(@RequestBody LoginReqDto request, HttpServletResponse response) {
+        UserDto result = userService.login(request, response);
         return ApiResponse.<UserDto>builder()
                 .data(result)
                 .build();

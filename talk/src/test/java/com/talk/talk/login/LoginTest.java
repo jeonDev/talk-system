@@ -55,7 +55,7 @@ public class LoginTest {
         request.setId("testUser");
         request.setPassword("testPassword");
         // when
-        UserDto login = userService.login(request);
+        UserDto login = userService.login(request, null);
         System.out.println(login.getTokenInfo().getToken());
         // then
         assertThat(login.getName()).isEqualTo("테스트1");
@@ -69,7 +69,7 @@ public class LoginTest {
         request.setPassword("testPassword");
         // when & then
         assertThrows(IllegalArgumentException.class, () -> {
-            userService.login(request);
+            userService.login(request, null);
         });
     }
 
@@ -81,7 +81,7 @@ public class LoginTest {
         request.setPassword("errorPassword");
         // when & then
         assertThrows(IllegalArgumentException.class, () -> {
-            userService.login(request);
+            userService.login(request, null);
         });
     }
 
@@ -92,7 +92,7 @@ public class LoginTest {
         request.setId("testUser");
         request.setPassword("testPassword");
         // when
-        UserDto login = userService.login(request);
+        UserDto login = userService.login(request, null);
         String token = login.getTokenInfo().getToken();
         String jwtToken = generateJwt.getTokenForSubject(token);
         Optional<User> user = userRepository.findById(request.getId());

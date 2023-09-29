@@ -12,6 +12,8 @@ import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,7 +52,7 @@ public class UserService {
     /**
      * 로그인
      * */
-    public UserDto login(LoginReqDto request) {
+    public UserDto login(LoginReqDto request, HttpServletResponse response) {
 
         // 1. 고객 존재 여부 체크
         User user = userRepository.findById(request.getId()).orElseThrow(() ->
@@ -63,6 +65,13 @@ public class UserService {
 
         // 3. Token 발급.
         TokenInfo token = generateJwt.generateToken(user);
+
+        // 4. Cookie 에 Token 정보 Set
+        Cookie cookie = new Cookie("accessToken", token.getToken());
+        cookie.setMaxAge(60*60);
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
         return UserDto.builder()
                 .name(user.getName())

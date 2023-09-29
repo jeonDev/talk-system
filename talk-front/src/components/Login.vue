@@ -20,8 +20,11 @@ export default {
     }
   },
   methods: {
-    loginClick() {
-      login(this.loginRequest);
+    async loginClick() {
+      const res = await login(this.loginRequest);
+      if(res.status === 'SUCCESS') {
+        console.log(res);
+      }
     }
   }
 }
