@@ -6,6 +6,11 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     function (config) {
+
+        const token = sessionStorage.getItem("Authorization");
+        if( token != null && token !== '')
+            config.headers.Authorization = 'Bearer ' + token;
+
         return config;
     },
     function (error) {

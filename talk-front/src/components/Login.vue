@@ -23,7 +23,9 @@ export default {
     async loginClick() {
       const res = await login(this.loginRequest);
       if(res.status === 'SUCCESS') {
-        console.log(res);
+        const accessToken = res.data.tokenInfo.token;
+        sessionStorage.setItem('Authorization', accessToken);
+        console.log(sessionStorage.getItem('Authorization'))
       }
     }
   }
