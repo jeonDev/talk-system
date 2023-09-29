@@ -1,12 +1,41 @@
 <template>
   <div>
-    <input v-model="signupRequest.id">
-    <input v-model="signupRequest.password">
-    <input v-model="signupRequest.name">
-    <input v-model="signupRequest.nickname">
-    <input v-model="signupRequest.phone">
-    <input v-model="signupRequest.email">
-    <button @click="signUpClick">회원가입</button>
+    <b-form-input
+        v-model="signupRequest.id"
+        type="text"
+        placeholder="ID"
+    />
+    <b-form-input
+        v-model="signupRequest.password"
+        type="password"
+        placeholder="PASSWORD"
+    />
+    <b-form-input
+        v-model="signupRequest.name"
+        type="text"
+        placeholder="NAME"
+    />
+    <b-form-input
+        v-model="signupRequest.nickname"
+        type="text"
+        placeholder="NICKNAME"
+    />
+    <b-form-input
+        v-model="signupRequest.phone"
+        type="tel"
+        placeholder="PHONE"
+    />
+    <b-form-input
+        v-model="signupRequest.email"
+        type="email"
+        placeholder="EMAIL"
+    />
+    <b-button
+        variant="primary"
+        @click="signUpClick"
+    >
+      회원가입
+    </b-button>
   </div>
 </template>
 

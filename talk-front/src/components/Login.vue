@@ -1,8 +1,21 @@
 <template>
   <div>
-    <input v-model="loginRequest.id">
-    <input v-model="loginRequest.password">
-    <button @click="loginClick">login</button>
+    <b-form-input
+        v-model="loginRequest.id"
+        type="text"
+        placeholder="ID"
+    />
+    <b-form-input
+        v-model="loginRequest.password"
+        type="password"
+        placeholder="PASSWORD"
+    />
+    <b-button
+        variant="primary"
+        @click="loginClick"
+    >
+      Login
+    </b-button>
   </div>
 </template>
 
