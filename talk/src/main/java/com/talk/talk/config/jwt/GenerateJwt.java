@@ -39,23 +39,30 @@ public class GenerateJwt {
      * */
     public TokenInfo generateToken(User user) {
 
-        String accessToken = Jwts.builder()
-                .setSubject(user.getUserSeq().toString())
-                .setExpiration(new Date(new Date().getTime() + EXPIRATION_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String accessToken = generateToken("ACCESS_TOKEN", user.getUserSeq().toString());
 
-        String refreshToken = Jwts.builder()
-                .setSubject(user.getUserSeq().toString())
-                .setExpiration(new Date(new Date().getTime() + REFRESH_EXPIRATION_TIME))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String refreshToken = generateToken("REFRESH_TOKEN", user.getUserSeq().toString());
 
         return TokenInfo.builder()
                 .grantType(BEARER_TYPE)
                 .token(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    /**
+     * Token 생성
+     * */
+    public String generateToken(String tokenDivisionValue, String subject) {
+        long expiration = 0;
+        if("REFRESH_TOKEN".equals(tokenDivisionValue)) expiration = REFRESH_EXPIRATION_TIME;
+        else if ("ACCESS_TOKEN".equals(tokenDivisionValue)) expiration = EXPIRATION_TIME;
+
+        return Jwts.builder()
+                .setSubject(subject)
+                .setExpiration(new Date(new Date().getTime() + expiration))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     /**

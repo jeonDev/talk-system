@@ -80,6 +80,28 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * 토큰 재발급
+     * */
+    public TokenInfo tokenReIssue(String accessToken, String refreshToken) throws ApiException{
+        String accessTokenSubject = generateJwt.getTokenForSubject(accessToken);
+        String refreshTokenSubject = generateJwt.getTokenForSubject(refreshToken);
+
+        if(accessTokenSubject != null && refreshTokenSubject != null) {
+            if(accessTokenSubject.equals(refreshTokenSubject)) {
+                UserInfo userInfo = (UserInfo) this.selectValidUserInfo(Long.parseLong(refreshTokenSubject));
+                String token = generateJwt.generateToken("REFRESH_TOKEN", userInfo.getId());
+                return TokenInfo.builder()
+                        .refreshToken(token)
+                        .build();
+            } else {
+                throw new ApiException(ExceptionEnum.INVALID_ACCESS);
+            }
+        } else {
+            throw new ApiException(ExceptionEnum.NOT_EXISTS_TOKEN);
+        }
+    }
+
     /** 인증 여부 체크 */
     public UserDetails selectValidUserInfo(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ApiException(ExceptionEnum.NOT_EXISTS_USER.getCode(), ExceptionEnum.NOT_EXISTS_USER.getMessage()));
