@@ -6,6 +6,7 @@
         class="mb-1"
         placeholder="ID"
         maxlength="16"
+        @keyup:enter="loginClick"
     />
     <b-form-input
         v-model="loginRequest.password"
@@ -13,6 +14,7 @@
         class="mb-1"
         placeholder="PASSWORD"
         maxlength="20"
+        @keyup:enter="loginClick"
     />
     <b-button
         class="w-100"
@@ -63,7 +65,6 @@ export default {
       if(res.status === 'SUCCESS') {
         const accessToken = res.data.tokenInfo.token;
         sessionStorage.setItem('Authorization', accessToken);
-        console.log(sessionStorage.getItem('Authorization'))
       } else {
         this.setErrorMsg(res.status, res.message)
       }
