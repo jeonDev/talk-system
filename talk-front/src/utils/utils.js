@@ -39,10 +39,15 @@ const MessageEnum = {
     EMAIL_CHECK : "이메일을 입력해주세요."
 }
 
+const isStringEmpty = (value) => {
+    return value === null || value.size === 0 || value === undefined;
+}
+
 export {
     checkPassword,
     checkEmail,
     checkPhoneNumber,
     checkId,
-    MessageEnum
+    MessageEnum,
+    isStringEmpty
 }

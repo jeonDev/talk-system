@@ -12,6 +12,7 @@ export async function login(request) {
         })
 }
 
+/** 회원가입 */
 export async function signup(request) {
     return await client
         .post("/login/signup", request)
@@ -20,5 +21,17 @@ export async function signup(request) {
         })
         .catch((err) => {
             return err.response.data;
+        })
+}
+
+/** 토큰 재 요청 */
+export async function tokenReIssue(accessToken) {
+    return await client
+        .post("/token/reIssue", accessToken)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((err) => {
+            return err.response;
         })
 }

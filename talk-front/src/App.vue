@@ -1,10 +1,15 @@
 <template>
   <div id="app">
     <div class="talk-bg">
-      <!-- Login Before  -->
-      <div class="talk-app">
+      <div class="d-flex talk-app">
         <div class="talk-app-main">
-          <LoginBefore/>
+          <!-- Login Before  -->
+          <div v-if="isAuthentication">
+            <LoginBefore/>
+          </div>
+          <div v-else>
+            <LoginAfter/>
+          </div>
         </div>
       </div>
     </div>
@@ -15,11 +20,20 @@
 <script>
 
 import LoginBefore from "@/components/layout/LoginBefore.vue";
+import LoginAfter from "@/components/layout/LoginAfter.vue";
+import {isStringEmpty} from "@/utils/utils";
 
 export default {
   name: 'App',
+  methods: {isStringEmpty},
   components: {
+    LoginAfter,
     LoginBefore
+  },
+  computed: {
+    isAuthentication: () => {
+      return isStringEmpty(sessionStorage.getItem('Authorization'));
+    }
   }
 }
 </script>
@@ -33,8 +47,6 @@ export default {
 .talk-app {
   height: 100%;
   margin: auto;
-  padding-top: 60px;
-  padding-bottom: 60px;
   max-width: 500px;
   background-color: #EBE4D1;
 }
