@@ -16,6 +16,7 @@ public class HandlerException {
         log.error("ApiException : {} : {}"
                 , e.getCode()
                 , e.getMessage()
+                , e
         );
 
         ApiResponse<?> response = ApiResponse.builder()
@@ -29,6 +30,7 @@ public class HandlerException {
     public ResponseEntity<?> exceptionHandler(final Exception e) {
         log.error("Exception : {}"
                 , e.getMessage()
+                , e
         );
 
         ApiResponse<?> response = ApiResponse.builder()

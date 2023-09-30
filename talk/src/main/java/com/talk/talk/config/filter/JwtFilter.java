@@ -1,7 +1,6 @@
 package com.talk.talk.config.filter;
 
 import com.talk.talk.config.jwt.GenerateJwt;
-import com.talk.talk.config.jwt.JwtUtils;
 import com.talk.talk.config.jwt.security.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,14 +17,13 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final GenerateJwt generateJwt;
-    private final JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("Request URI : ", request.getRequestURI());
         String accessToken = generateJwt.resolveAccessToken(request);
-        if(accessToken != null) {
-            Authentication authentication = jwtUtils.getAuthentication(accessToken);
+        if(accessToken != null && generateJwt.validDateToken(accessToken)) {
+            Authentication authentication = generateJwt.getAuthentication(accessToken);
             TalkSecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

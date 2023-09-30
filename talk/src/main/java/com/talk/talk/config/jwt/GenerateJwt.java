@@ -29,6 +29,9 @@ public class GenerateJwt {
     private final Long REFRESH_EXPIRATION_TIME = 86400000L;
 
     @Autowired
+    private UserSecurityService userSecurityService;
+
+    @Autowired
     public GenerateJwt(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -82,5 +85,29 @@ public class GenerateJwt {
         if(authorization == null || !authorization.startsWith(BEARER_TYPE)) return null;
 
         return authorization.substring(BEARER_TYPE.toString().length() + 1, authorization.length());
+    }
+
+    /** 토큰 만료시간 체크 */
+    public boolean validDateToken(String token) {
+        try{
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch(SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch(ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch(UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch(IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return false;
+    }
+
+    /** Authentication 객체 반환 */
+    public Authentication getAuthentication(String accessToken) {
+        String subject = getTokenForSubject(accessToken);
+        UserDetails userDetails = userSecurityService.selectValidUserInfo(Long.parseLong(subject));
+        return new TalkAuthentication(userDetails);
     }
 }

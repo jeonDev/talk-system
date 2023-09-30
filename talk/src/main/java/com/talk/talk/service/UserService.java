@@ -2,7 +2,7 @@ package com.talk.talk.service;
 
 import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
-import com.talk.talk.config.jwt.security.UserDetails;
+import com.talk.talk.config.jwt.service.UserSecurityService;
 import com.talk.talk.config.jwt.vo.UserInfo;
 import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.config.jwt.GenerateJwt;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
 
+    private final UserSecurityService userSecurityService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final GenerateJwt generateJwt;
@@ -89,7 +90,7 @@ public class UserService {
 
         if(accessTokenSubject != null && refreshTokenSubject != null) {
             if(accessTokenSubject.equals(refreshTokenSubject)) {
-                UserInfo userInfo = (UserInfo) this.selectValidUserInfo(Long.parseLong(refreshTokenSubject));
+                UserInfo userInfo = (UserInfo) userSecurityService.selectValidUserInfo(Long.parseLong(refreshTokenSubject));
                 String token = generateJwt.generateToken("REFRESH_TOKEN", userInfo.getId());
                 return TokenInfo.builder()
                         .refreshToken(token)
@@ -102,15 +103,5 @@ public class UserService {
         }
     }
 
-    /** 인증 여부 체크 */
-    public UserDetails selectValidUserInfo(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ApiException(ExceptionEnum.NOT_EXISTS_USER.getCode(), ExceptionEnum.NOT_EXISTS_USER.getMessage()));
 
-        return UserInfo.builder()
-                .userSeq(user.getUserSeq())
-                .id(user.getId())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .build();
-    }
 }
