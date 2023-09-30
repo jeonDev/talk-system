@@ -10,7 +10,8 @@ export default {
   methods: {
     logout() {
       sessionStorage.removeItem("Authorization");
-      this.$router.push({name: "Login"})
+      window.location.href = "/login"
+      // this.$router.push({name: "Login"})
     }
   },
   created() {
