@@ -12,6 +12,7 @@
           </div>
         </div>
       </div>
+      <ModalView/>
     </div>
 
   </div>
@@ -22,11 +23,13 @@
 import LoginBefore from "@/components/layout/LoginBefore.vue";
 import LoginAfter from "@/components/layout/LoginAfter.vue";
 import {isStringEmpty} from "@/utils/utils";
+import ModalView from "@/components/layout/Modal.vue";
 
 export default {
   name: 'App',
   methods: {isStringEmpty},
   components: {
+    ModalView,
     LoginAfter,
     LoginBefore
   },

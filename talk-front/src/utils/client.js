@@ -1,6 +1,7 @@
 import axios from "axios";
 import {router} from "@/router/router";
 import {tokenReIssue} from "@/request/login";
+import store from "@/store/modalStore";
 
 const instance = axios.create({
     baseURL : 'http://localhost:8000'
@@ -31,9 +32,7 @@ instance.interceptors.response.use(
         if(error.response.status === 401 && !originRequest._retry) {
             const accessToken = sessionStorage.getItem("Authorization");
             if(!accessToken) {
-                // TODO: Modal
-                alert("로그인 후 이용 해 주세요.");
-                router.push({name: "Login"});
+                store.commit('showModal', {code: '', message: '로그인 후 이용 해 주세요.', callback: () => {router.push({name: "Login"});}});
                 return false;
             }
 
@@ -53,9 +52,7 @@ instance.interceptors.response.use(
                 sessionStorage.removeItem("Authorization");
             }
         } else if (error.response.status === 401) {
-            // TODO: Modal
-            alert("로그인 후 이용 해 주세요.");
-            router.push({name: "Login"});
+            store.commit('showModal', {code: '', message: '로그인 후 이용 해 주세요.', callback: () => {router.push({name: "Login"})}});
             return false;
         }
 
