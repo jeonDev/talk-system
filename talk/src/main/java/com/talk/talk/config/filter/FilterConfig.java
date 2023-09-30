@@ -15,7 +15,7 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean jwtFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new JwtFilter(generateJwt));
-        filterRegistrationBean.addUrlPatterns("/user/**");
+        filterRegistrationBean.addUrlPatterns("/user/*");
         return filterRegistrationBean;
     }
 }

@@ -4,6 +4,7 @@ import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
 import com.talk.talk.config.jwt.service.UserSecurityService;
 import com.talk.talk.config.jwt.vo.UserInfo;
+import com.talk.talk.config.vo.TokenEnum;
 import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.domain.user.User;
@@ -84,20 +85,15 @@ public class UserService {
     /**
      * 토큰 재발급
      * */
-    public TokenInfo tokenReIssue(String accessToken, String refreshToken) throws ApiException{
-        String accessTokenSubject = generateJwt.getTokenForSubject(accessToken);
+    public TokenInfo tokenReIssue(String refreshToken) throws ApiException{
         String refreshTokenSubject = generateJwt.getTokenForSubject(refreshToken);
 
-        if(accessTokenSubject != null && refreshTokenSubject != null) {
-            if(accessTokenSubject.equals(refreshTokenSubject)) {
-                UserInfo userInfo = (UserInfo) userSecurityService.selectValidUserInfo(Long.parseLong(refreshTokenSubject));
-                String token = generateJwt.generateToken("REFRESH_TOKEN", userInfo.getId());
-                return TokenInfo.builder()
-                        .refreshToken(token)
-                        .build();
-            } else {
-                throw new ApiException(ExceptionEnum.INVALID_ACCESS);
-            }
+        if(refreshTokenSubject != null) {
+            UserInfo userInfo = (UserInfo) userSecurityService.selectValidUserInfo(Long.parseLong(refreshTokenSubject));
+            String token = generateJwt.generateToken(TokenEnum.ACCESS_TOKEN, userInfo.getUserSeq().toString());
+            return TokenInfo.builder()
+                    .token(token)
+                    .build();
         } else {
             throw new ApiException(ExceptionEnum.NOT_EXISTS_TOKEN);
         }

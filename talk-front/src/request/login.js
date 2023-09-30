@@ -25,9 +25,9 @@ export async function signup(request) {
 }
 
 /** 토큰 재 요청 */
-export async function tokenReIssue(accessToken) {
+export async function tokenReIssue() {
     return await client
-        .post("/token/reIssue", accessToken)
+        .post("/token/reIssue", {}, {withCredentials: true})
         .then((res) => {
             return res.data;
         })

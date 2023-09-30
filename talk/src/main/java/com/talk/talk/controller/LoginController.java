@@ -52,11 +52,9 @@ public class LoginController {
      * Token 재발급
      * */
     @PostMapping("/token/reIssue")
-    public ApiResponse<TokenInfo> tokenReIssue(@RequestBody String accessToken,
-            @CookieValue(value = "refreshToken", required = false) String refreshToken) throws ApiException {
-
+    public ApiResponse<TokenInfo> tokenReIssue(@CookieValue(value = "refreshToken", required = false) String refreshToken) throws ApiException {
         if(StringUtils.isStringEmptyOrNull(refreshToken)) throw new ApiException(ExceptionEnum.NOT_EXISTS_TOKEN);
-        TokenInfo tokenInfo = userService.tokenReIssue(accessToken, refreshToken);
+        TokenInfo tokenInfo = userService.tokenReIssue(refreshToken);
 
         return ApiResponse.<TokenInfo>builder()
                 .data(tokenInfo)

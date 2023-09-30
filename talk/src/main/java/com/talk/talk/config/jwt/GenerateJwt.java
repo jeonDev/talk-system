@@ -1,10 +1,15 @@
 package com.talk.talk.config.jwt;
 
+import com.talk.talk.config.jwt.security.Authentication;
+import com.talk.talk.config.jwt.security.TalkAuthentication;
+import com.talk.talk.config.jwt.security.UserDetails;
+import com.talk.talk.config.jwt.service.UserSecurityService;
+import com.talk.talk.config.vo.TokenEnum;
 import com.talk.talk.config.vo.TokenInfo;
 import com.talk.talk.domain.user.User;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.SecurityException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +30,7 @@ public class GenerateJwt {
 
     private static final String BEARER_TYPE = "Bearer";
     private final Key key;
-    private final Long EXPIRATION_TIME = 86400000L;
+    private final Long EXPIRATION_TIME = 60 * 60 * 60L;
     private final Long REFRESH_EXPIRATION_TIME = 86400000L;
 
     @Autowired
@@ -42,9 +47,9 @@ public class GenerateJwt {
      * */
     public TokenInfo generateToken(User user) {
 
-        String accessToken = generateToken("ACCESS_TOKEN", user.getUserSeq().toString());
+        String accessToken = generateToken(TokenEnum.ACCESS_TOKEN, user.getUserSeq().toString());
 
-        String refreshToken = generateToken("REFRESH_TOKEN", user.getUserSeq().toString());
+        String refreshToken = generateToken(TokenEnum.REFRESH_TOKEN, user.getUserSeq().toString());
 
         return TokenInfo.builder()
                 .grantType(BEARER_TYPE)
@@ -56,10 +61,10 @@ public class GenerateJwt {
     /**
      * Token 생성
      * */
-    public String generateToken(String tokenDivisionValue, String subject) {
+    public String generateToken(TokenEnum tokenInfo, String subject) {
         long expiration = 0;
-        if("REFRESH_TOKEN".equals(tokenDivisionValue)) expiration = REFRESH_EXPIRATION_TIME;
-        else if ("ACCESS_TOKEN".equals(tokenDivisionValue)) expiration = EXPIRATION_TIME;
+        if(TokenEnum.REFRESH_TOKEN.equals(tokenInfo)) expiration = REFRESH_EXPIRATION_TIME;
+        else if (TokenEnum.ACCESS_TOKEN.equals(tokenInfo)) expiration = EXPIRATION_TIME;
 
         return Jwts.builder()
                 .setSubject(subject)

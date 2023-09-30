@@ -37,10 +37,10 @@ instance.interceptors.response.use(
                 return false;
             }
 
-            const res = await tokenReIssue(accessToken);
+            const res = await tokenReIssue();
 
             if(res.status === 'SUCCESS') {
-                const token = res.data.tokenInfo.token;
+                const token = res.data.token;
                 sessionStorage.setItem('Authorization', token);
                 originRequest._retry = true;
 
