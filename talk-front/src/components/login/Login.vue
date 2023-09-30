@@ -65,6 +65,7 @@ export default {
       if(res.status === 'SUCCESS') {
         const accessToken = res.data.tokenInfo.token;
         sessionStorage.setItem('Authorization', accessToken);
+        this.$router.push({name: "Main"})
       } else {
         this.setErrorMsg(res.status, res.message)
       }
