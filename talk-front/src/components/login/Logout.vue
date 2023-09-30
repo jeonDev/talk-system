@@ -6,10 +6,15 @@
 
 <script>
 export default {
-  name: 'LogoutView'
+  name: 'LogoutView',
+  methods: {
+    logout() {
+      sessionStorage.removeItem("Authorization");
+      this.$router.push({name: "Login"})
+    }
+  },
+  created() {
+    this.logout();
+  }
 }
 </script>
-
-<style scoped>
-
-</style>
