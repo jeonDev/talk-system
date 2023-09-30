@@ -24,7 +24,10 @@
       Login
     </b-button>
 
-    <b-modal v-model="modal.isShow">
+    <b-modal
+        hide-footer
+        v-model="modal.isShow"
+    >
       [{{modal.code}}] {{modal.message}}
     </b-modal>
 
