@@ -65,7 +65,7 @@ instance.interceptors.response.use(
             store.commit('showModal', unAuthorizationResponseObject);
             return new Promise(() => {});
         } else {
-            store.commit('showModal', {code: error.response.data.code, message: error.response.data.message, callback: () => {}});
+            store.commit('showModal', {code: error.response.data.status, message: error.response.data.message, callback: () => {}});
         }
         return Promise.reject(error);
     }
