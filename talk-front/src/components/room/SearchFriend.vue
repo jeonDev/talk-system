@@ -23,13 +23,19 @@
         {{item.id}}
         {{item.name}}
         {{item.nickname}}
+        <b-button
+            variant="outline-dark"
+            @click="requestFriend(item.userSeq)"
+        >
+          친구요청
+        </b-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {selectFriendList} from "@/request/friend";
+import {requestFriend, selectFriendList} from "@/request/friend";
 
 export default {
   name: 'SearchFriendView',
@@ -49,6 +55,10 @@ export default {
         console.log(result.data);
         this.friendList = result.data;
       }
+    },
+    async requestFriend(userSeq) {
+      const result = await requestFriend({ userSeq : userSeq });
+      console.log(result);
     }
   }
 }
