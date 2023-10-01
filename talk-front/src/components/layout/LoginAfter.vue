@@ -28,6 +28,7 @@
       </div>
 
     </b-nav>
+    <hr/>
     <section>
       <router-view></router-view>
     </section>
@@ -48,5 +49,8 @@
 .nav-router:hover {
   color: #E55604;
   font-size: 16px;
+}
+hr{
+  margin:0
 }
 </style>

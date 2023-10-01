@@ -6,6 +6,7 @@ import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.service.FriendService;
+import com.talk.talk.vo.friend.FriendListResDto;
 import com.talk.talk.vo.friend.FriendRequestReqDto;
 import com.talk.talk.vo.friend.FriendSearchReqDto;
 import com.talk.talk.vo.friend.FriendSearchResDto;
@@ -30,9 +31,22 @@ public class FriendController {
      * */
     @GetMapping("/user/friend/search")
     public ApiResponse<List<FriendSearchResDto>> searchFriendSearchList(FriendSearchReqDto request) {
-        List<FriendSearchResDto> result = friendService.selectFriendList(request);
+        List<FriendSearchResDto> result = friendService.selectRecommendFriendList(request);
 
         return ApiResponse.<List<FriendSearchResDto>>builder()
+                .data(result)
+                .build();
+    }
+
+    /**
+     * 친구 목록 조회
+     * */
+    @GetMapping("/user/friend/list")
+    public ApiResponse<List<FriendListResDto>> selectFriendList() {
+        Long userSeq = CommonUtils.getUserInfo().getUserSeq();
+
+        List<FriendListResDto> result = friendService.selectFriendList(userSeq);
+        return ApiResponse.<List<FriendListResDto>>builder()
                 .data(result)
                 .build();
     }

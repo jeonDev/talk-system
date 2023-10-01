@@ -16,6 +16,7 @@
         </router-link>
       </b-nav-item>
     </b-nav>
+    <hr/>
     <section>
       <router-view></router-view>
     </section>

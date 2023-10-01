@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import {requestFriend, selectFriendList} from "@/request/friend";
+import {requestFriend, selectRecommendFriendList} from "@/request/friend";
 
 export default {
   name: 'SearchFriendView',
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     async searchFriendList() {
-      const result = await selectFriendList(this.searchInfo.nameOrNickname);
+      const result = await selectRecommendFriendList(this.searchInfo.nameOrNickname);
       if(result.status === 'SUCCESS') {
         console.log(result);
         console.log(result.data);

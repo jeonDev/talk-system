@@ -8,6 +8,7 @@ import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.domain.friend.FriendRepository;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
+import com.talk.talk.vo.friend.FriendListResDto;
 import com.talk.talk.vo.friend.FriendRequestReqDto;
 import com.talk.talk.vo.friend.FriendSearchReqDto;
 import com.talk.talk.vo.friend.FriendSearchResDto;
@@ -30,12 +31,24 @@ public class FriendService {
     /**
      * 친구 찾기
      */
-    public List<FriendSearchResDto> selectFriendList(FriendSearchReqDto request) {
+    public List<FriendSearchResDto> selectRecommendFriendList(FriendSearchReqDto request) {
         UserInfo userInfo = CommonUtils.getUserInfo();
         List<User> list = userRepository.findByFriendSearch(userInfo.getUserSeq(), StringUtils.nvlStr(request.getNameOrNickname()));
 
         return list.stream()
                 .map(FriendSearchResDto::new)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 친구 목록 조회
+     * */
+    public List<FriendListResDto> selectFriendList(Long userSeq) {
+
+        List<Friend> list = friendRepository.findByUser(userSeq);
+
+        return list.stream()
+                .map(FriendListResDto::new)
                 .collect(Collectors.toList());
     }
 
