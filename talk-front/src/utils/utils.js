@@ -43,11 +43,16 @@ const isStringEmpty = (value) => {
     return value === null || value.size === 0 || value === undefined;
 }
 
+const nvlStr = (value) => {
+    return isStringEmpty(value) ? '' : value
+}
+
 export {
     checkPassword,
     checkEmail,
     checkPhoneNumber,
     checkId,
     MessageEnum,
-    isStringEmpty
+    isStringEmpty,
+    nvlStr
 }
