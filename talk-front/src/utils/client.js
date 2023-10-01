@@ -64,6 +64,8 @@ instance.interceptors.response.use(
         } else if (error.response.status === 401) {
             store.commit('showModal', unAuthorizationResponseObject);
             return new Promise(() => {});
+        } else {
+            store.commit('showModal', {code: error.response.data.code, message: error.response.data.message, callback: () => {}});
         }
         return Promise.reject(error);
     }
