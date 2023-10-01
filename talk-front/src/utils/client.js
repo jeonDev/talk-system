@@ -49,6 +49,8 @@ instance.interceptors.response.use(
 
                 return instance(originRequest);
             } else {
+                sessionStorage.removeItem('name');
+                sessionStorage.removeItem('nickname');
                 sessionStorage.removeItem("Authorization");
             }
         } else if (error.response.status === 401) {
