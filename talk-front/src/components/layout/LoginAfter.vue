@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-nav class="d-flex justify-content-between">
-      <div>
+      <div class="d-flex w-75">
         <b-nav-item>
           <router-link
               class="nav-router"
