@@ -1,7 +1,15 @@
 import axios from "axios";
 import {router} from "@/router/router";
 import {tokenReIssue} from "@/request/login";
-import store from "@/store/modalStore";
+import store from "@/store/index";
+
+const unAuthorizationResponseObject = {
+    code: 'UNAUTHORIZED',
+    message: '로그인 후 이용 해 주세요.',
+    callback: () => {
+        router.push({name: "Login"})
+    }
+}
 
 const instance = axios.create({
     baseURL : 'http://localhost:8000'
@@ -32,8 +40,8 @@ instance.interceptors.response.use(
         if(error.response.status === 401 && !originRequest._retry) {
             const accessToken = sessionStorage.getItem("Authorization");
             if(!accessToken) {
-                store.commit('showModal', {code: '', message: '로그인 후 이용 해 주세요.', callback: () => {router.push({name: "Login"});}});
-                return false;
+                store.commit('showModal', unAuthorizationResponseObject);
+                return Promise.resolve(error.response)
             }
 
             const res = await tokenReIssue();
@@ -54,12 +62,10 @@ instance.interceptors.response.use(
                 sessionStorage.removeItem("Authorization");
             }
         } else if (error.response.status === 401) {
-            store.commit('showModal', {code: '', message: '로그인 후 이용 해 주세요.', callback: () => {router.push({name: "Login"})}});
-            return false;
+            store.commit('showModal', unAuthorizationResponseObject);
+            return new Promise(() => {});
         }
-
         return Promise.reject(error);
-
     }
 )
 

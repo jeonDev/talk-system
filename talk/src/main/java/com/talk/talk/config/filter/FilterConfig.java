@@ -1,6 +1,7 @@
 package com.talk.talk.config.filter;
 
 import com.talk.talk.config.jwt.GenerateJwt;
+import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +14,10 @@ public class FilterConfig {
     private GenerateJwt generateJwt;
 
     @Bean
-    public FilterRegistrationBean jwtFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new JwtFilter(generateJwt));
+    public FilterRegistrationBean<JwtFilter> jwtFilter() {
+        FilterRegistrationBean<JwtFilter> filterRegistrationBean = new FilterRegistrationBean<JwtFilter>(new JwtFilter(generateJwt));
         filterRegistrationBean.addUrlPatterns("/user/*");
+        filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST);
         return filterRegistrationBean;
     }
 }

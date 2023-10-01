@@ -2,6 +2,7 @@ package com.talk.talk.config.filter;
 
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.config.jwt.security.*;
+import com.talk.talk.config.vo.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,15 +22,21 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Preflight Request 방지
+        if("OPTIONS".equals(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         log.info("Request URI : {}", request.getRequestURI());
 
         String accessToken = generateJwt.resolveAccessToken(request);
         if(accessToken != null && generateJwt.validDateToken(accessToken)) {
             Authentication authentication = generateJwt.getAuthentication(accessToken);
             TalkSecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
         } else {
             response.sendError(HttpStatus.UNAUTHORIZED.value());
+            return;
         }
+        filterChain.doFilter(request, response);
     }
 }
