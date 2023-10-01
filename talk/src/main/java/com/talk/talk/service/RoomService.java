@@ -50,8 +50,8 @@ public class RoomService {
             if(user.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
 
             RoomUser roomUser = RoomUser.builder()
-                    .roomSeq(room)
-                    .userSeq(user.get())
+                    .room(room)
+                    .user(user.get())
                     .build();
 
             roomUsers.add(roomUser);
@@ -61,6 +61,38 @@ public class RoomService {
 
         return RoomInviteResDto.builder()
                 .roomSeq(room.getRoomSeq())
+                .build();
+    }
+
+    public RoomInviteResDto roomInvite(RoomInviteReqDto request, Long userSeq) {
+
+        // 방 존재 여부 체크
+        Long[] param = {request.getUserSeq(), userSeq};
+        Long roomSeq = roomUserRepository.findByUserSeqIn(param);
+
+        if(roomSeq == null) {
+            // 방 생성
+            Room room = roomRepository.saveAndFlush(Room.builder().build());
+
+            List<RoomUser> roomUsers = new ArrayList<RoomUser>();
+
+            // 사용자 초대
+            for (Long reqUser : param) {
+                Optional<User> user = userRepository.findById(reqUser);
+                if (user.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
+
+                RoomUser roomUser = RoomUser.builder()
+                        .room(room)
+                        .user(user.get())
+                        .build();
+
+                roomUsers.add(roomUser);
+            }
+
+            roomUserRepository.saveAll(roomUsers);
+        }
+        return RoomInviteResDto.builder()
+                .roomSeq(roomSeq)
                 .build();
     }
 }

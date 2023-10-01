@@ -18,10 +18,10 @@ public class RoomUser extends BaseTimeEntity {
     @Id
     @ManyToOne
     @JoinColumn(name = "ROOM_SEQ")
-    private Room roomSeq;
+    private Room room;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "USER_SEQ")
-    private User userSeq;
+    private User user;
 }

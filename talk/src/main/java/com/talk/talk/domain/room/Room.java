@@ -20,6 +20,6 @@ public class Room extends BaseTimeEntity {
     @Column(name = "ROOM_SEQ", nullable = false)
     private Long roomSeq;
 
-    @OneToMany(mappedBy = "roomSeq")
+    @OneToMany(mappedBy = "room")
     private List<RoomUser> roomUsers = new ArrayList<>();
 }

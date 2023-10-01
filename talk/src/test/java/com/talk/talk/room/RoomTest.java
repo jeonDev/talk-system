@@ -43,7 +43,7 @@ public class RoomTest {
 
         // then
         Room room = roomRepository.findById(response.getRoomSeq()).get();
-        List<RoomUser> roomUsers = roomUserRepository.findByRoomSeq(room);
+        List<RoomUser> roomUsers = roomUserRepository.findByRoom(room);
         assertThat(roomUsers.size()).isEqualTo(request.size());
     }
 }

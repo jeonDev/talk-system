@@ -11,6 +11,7 @@
       <div>
         <b-button
             variant="outline-dark"
+            @click="createRoom(item.userSeq)"
         >
           대화하기
         </b-button>
@@ -20,8 +21,18 @@
 </template>
 
 <script>
+import {createPrivateRoom} from "@/request/room";
+
 export default {
   name: 'FriendListView',
-  props: [ 'friendList' ]
+  props: [ 'friendList' ],
+  methods: {
+    async createRoom(userSeq) {
+      const result = createPrivateRoom({userSeq: userSeq});
+      if(result.status === 'SUCCESS') {
+        console.log(result);
+      }
+    }
+  }
 }
 </script>

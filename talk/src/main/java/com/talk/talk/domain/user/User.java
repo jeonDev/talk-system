@@ -38,6 +38,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "EMAIL", length = 100)
     private String email;
 
-    @OneToMany(mappedBy = "userSeq")
+    @OneToMany(mappedBy = "user")
     private List<RoomUser> roomUsers = new ArrayList<>();
 }
