@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> {
     List<RoomUser> findByRoom(Room room);
@@ -36,4 +37,13 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
                     " GROUP BY ru.room"
     )
     List<RoomResList> findByRoomList(@Param("userSeq") Long userSeq);
+
+    @Query(
+            value = "SELECT ru" +
+                    "  FROM RoomUser ru" +
+                    " WHERE ru.room.roomSeq = :roomSeq" +
+                    "   AND ru.user.userSeq = :userSeq"
+    )
+    Optional<RoomUser> findByRoomSeqAndUserSeq(@Param("roomSeq") Long roomSeq,
+                                               @Param("userSeq") Long userSeq);
 }
