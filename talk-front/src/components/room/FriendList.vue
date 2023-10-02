@@ -35,7 +35,7 @@ export default {
       }
     },
     async attendChattingRoom(roomSeq) {
-      console.log(roomSeq)
+      this.$router.push({name: "ChattingRoom", params: {roomSeq: roomSeq}});
     }
   }
 }
