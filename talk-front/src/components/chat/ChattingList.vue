@@ -3,13 +3,15 @@
     <div v-for="(item, idx) in chattingRoomList"
          :key="idx"
          class="d-flex justify-content-between mb-1 p-2 border-bottom border-secondary-subtle align-items-center"
+         role="button"
+         @click="attendChattingRoom(item.roomSeq)"
     >
       <div>
         <!-- 채팅 참가자 -->
         <div>
           {{item.roomTitle}}
         </div>
-        <!-- 채팅 마지막 대화 -->>
+        <!-- 채팅 마지막 대화 -->
         <div>
 
         </div>
@@ -39,6 +41,9 @@ export default {
       if(result.status === 'SUCCESS') {
         this.chattingRoomList = result.data;
       }
+    },
+    async attendChattingRoom(roomSeq) {
+      console.log(roomSeq)
     }
   },
   created() {

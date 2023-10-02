@@ -28,10 +28,14 @@ export default {
   props: [ 'friendList' ],
   methods: {
     async createRoom(userSeq) {
-      const result = createPrivateRoom({userSeq: userSeq});
+      const result = await createPrivateRoom({userSeq: userSeq});
+
       if(result.status === 'SUCCESS') {
-        console.log(result);
+        this.attendChattingRoom(result.data.roomSeq);
       }
+    },
+    async attendChattingRoom(roomSeq) {
+      console.log(roomSeq)
     }
   }
 }
