@@ -1,6 +1,7 @@
 package com.talk.talk.domain.roomUser;
 
 import com.talk.talk.domain.room.Room;
+import com.talk.talk.vo.room.RoomResList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,21 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
                     " HAVING COUNT(ru.room) > 1"
     )
     Long findByUserSeqIn(@Param("userSeqs") Long[] userSeqs);
+
+    @Query(
+            value = "SELECT new com.talk.talk.vo.room.RoomResList(" +
+                    "       ru.room.roomSeq" +
+                    "     , CAST(GROUP_CONCAT(ru.user.nickname) AS string )" +
+                    "       )" +
+                    "  FROM RoomUser ru" +
+                    "  JOIN ru.user u" +
+                    " WHERE ru.room IN (" +
+                    "                       SELECT subRu.room" +
+                    "                         FROM RoomUser subRu" +
+                    "                        WHERE subRu.user.userSeq = :userSeq" +
+                    "                       )" +
+                    "   AND ru.user.userSeq <> :userSeq" +
+                    " GROUP BY ru.room"
+    )
+    List<RoomResList> findByRoomList(@Param("userSeq") Long userSeq);
 }

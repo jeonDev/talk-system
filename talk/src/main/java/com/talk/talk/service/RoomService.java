@@ -9,6 +9,7 @@ import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
 import com.talk.talk.vo.room.RoomInviteReqDto;
 import com.talk.talk.vo.room.RoomInviteResDto;
+import com.talk.talk.vo.room.RoomResList;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,5 +95,12 @@ public class RoomService {
         return RoomInviteResDto.builder()
                 .roomSeq(roomSeq)
                 .build();
+    }
+
+    /**
+     * 채팅방 조회
+     * */
+    public List<RoomResList> selectRoomList(Long userSeq) {
+        return roomUserRepository.findByRoomList(userSeq);
     }
 }

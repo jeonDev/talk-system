@@ -5,8 +5,10 @@ import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.service.RoomService;
 import com.talk.talk.vo.room.RoomInviteReqDto;
 import com.talk.talk.vo.room.RoomInviteResDto;
+import com.talk.talk.vo.room.RoomResList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +49,20 @@ public class RoomController {
         RoomInviteResDto result = roomService.roomInvite(request, userSeq);
 
         return ApiResponse.<RoomInviteResDto>builder()
+                .data(result)
+                .build();
+    }
+
+    /**
+     * 채팅방 조회
+     * */
+    @GetMapping("/user/room/list")
+    public ApiResponse<List<RoomResList>> selectRoomList() {
+        Long userSeq = CommonUtils.getUserInfo().getUserSeq();
+
+        List<RoomResList> result = roomService.selectRoomList(userSeq);
+
+        return ApiResponse.<List<RoomResList>>builder()
                 .data(result)
                 .build();
     }
