@@ -35,8 +35,13 @@
   </div>
 </template>
 
-<script setup>
-
+<script>
+export default {
+  name: 'LoginAfterView',
+  created() {
+    this.$store.commit('SOCKET_CONNECT');
+  }
+}
 </script>
 
 <style scoped>

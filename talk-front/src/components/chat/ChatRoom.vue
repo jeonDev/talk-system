@@ -25,6 +25,7 @@ export default {
   },
   created() {
     this.selectRoomChattingList();
+    // this.$store.state.socketStore.socket.emit('connect');
   }
 }
 </script>
