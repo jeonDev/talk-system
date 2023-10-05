@@ -1,6 +1,15 @@
 <template>
   <div>
     {{roomSeq}}
+    <b-form-input
+        v-model="message"
+    />
+    <b-button
+        variant="outline-dark"
+        @click="sendMsg"
+      >
+      Send
+    </b-button>
   </div>
 </template>
 
@@ -12,7 +21,8 @@ export default {
   props: [ 'roomSeq' ],
   data() {
     return {
-      chattingList: []
+      chattingList: [],
+      message: ''
     }
   },
   methods: {
@@ -21,11 +31,14 @@ export default {
       if(result.status == 'SUCCESS') {
         this.chattingList = result.data;
       }
+    },
+    sendMsg() {
+      this.$store.commit('SOCKET_SEND_MESSAGE', this.message);
     }
   },
   created() {
     this.selectRoomChattingList();
-    // this.$store.state.socketStore.socket.emit('connect');
+    this.$store.commit('SOCKET_SEND_MESSAGE', 'test');
   }
 }
 </script>
