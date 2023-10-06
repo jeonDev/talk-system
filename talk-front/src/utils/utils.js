@@ -1,6 +1,6 @@
 /** 휴대전화 번호 정규식 체크 */
 const checkPhoneNumber = (value) => {
-    const regex = /^d{3}-d{3,4}-d{4}$/;
+    const regex =  /^(\d{2,3})(\d{3,4})(\d{4})$/;
     if (regex.test(value)) return true;
     return false;
 }
