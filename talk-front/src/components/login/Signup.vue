@@ -6,7 +6,7 @@
         class="mb-1"
         placeholder="ID"
         maxlength="16"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-form-input
         v-model="signupRequest.password"
@@ -14,7 +14,7 @@
         class="mb-1"
         placeholder="PASSWORD"
         maxlength="20"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-form-input
         v-model="signupRequest.name"
@@ -22,7 +22,7 @@
         class="mb-1"
         placeholder="NAME"
         maxlength="30"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-form-input
         v-model="signupRequest.nickname"
@@ -30,7 +30,7 @@
         class="mb-1"
         placeholder="NICKNAME"
         maxlength="10"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-form-input
         v-model="signupRequest.phone"
@@ -38,7 +38,7 @@
         class="mb-1"
         placeholder="PHONE"
         maxlength="11"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-form-input
         v-model="signupRequest.email"
@@ -46,7 +46,7 @@
         class="mb-1"
         placeholder="EMAIL"
         maxlength="100"
-        @keyup:enter="signUpClick"
+        @keyup.enter="signUpClick"
     />
     <b-button
         variant="outline-success"
