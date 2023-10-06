@@ -27,10 +27,9 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         log.info(session + " Text Message : " + message);
-        String payload = message.getPayload();
-        JSONObject jsonObject = new JSONObject(payload);
+
         for (WebSocketSession s : sessions) {
-            s.sendMessage(new TextMessage("Hi " + jsonObject.getString("user") + "!"));
+            s.sendMessage(new TextMessage("Hi " + message + "!"));
         }
         super.handleTextMessage(session, message);
     }

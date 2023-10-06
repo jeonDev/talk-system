@@ -1,5 +1,3 @@
-import {io} from "socket.io-client";
-
 const socketStore = {
     state: {
         message: '',
@@ -10,32 +8,17 @@ const socketStore = {
     },
     mutations: {
         SOCKET_CONNECT(state) {
-            console.log('SOCKET_CONNECT')
-            state.socket = io('http://localhost:8000', {
-                path: '/ws',
-                withCredentials: true
-            });
-
-            state.socket.on('connect', () => {
-                console.log('connect Event !!')
+            state.socket = new WebSocket("ws://localhost:8000/ws");
+            state.socket.onopen = () => {
                 state.isConnected = true;
-            })
-
-            state.socket.on('message', (message) => {
-                console.log("message : " , message)
-            })
-
-            console.log(state.socket)
-        },
-        SOCKET_DISCONNECT(state) {
-            if(state.socket) {
-                state.socket.disconnect();
+                console.log("연결완료");
+                state.socket.onmessage = ({data}) => {
+                    state.message = data;
+                }
             }
-            state.isConnected = false;
         },
         SOCKET_SEND_MESSAGE(state, message) {
-            console.log(message);
-            state.socket.emit('message', message);
+            state.socket.send(message);
         }
     }
 };

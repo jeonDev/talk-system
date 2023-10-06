@@ -1,11 +1,12 @@
 <template>
   <div>
-    {{roomSeq}}
+    {{chattingList}}
     <b-form-input
         v-model="message"
     />
     <b-button
         variant="outline-dark"
+        @keyup.enter="sendMsg"
         @click="sendMsg"
       >
       Send
@@ -25,6 +26,17 @@ export default {
       message: ''
     }
   },
+  computed: {
+    socketMsg: function () {
+      return this.$store.state.socketStore.message;
+    }
+  },
+  watch: {
+    socketMsg(value) {
+      console.log(value);
+      this.chattingList = value;
+    }
+  },
   methods: {
     async selectRoomChattingList() {
       const result = await selectRoomChattingList(this.roomSeq);
@@ -38,7 +50,6 @@ export default {
   },
   created() {
     this.selectRoomChattingList();
-    this.$store.commit('SOCKET_SEND_MESSAGE', 'test');
   }
 }
 </script>
