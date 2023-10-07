@@ -60,13 +60,13 @@ instance.interceptors.response.use(
                 sessionStorage.removeItem('name');
                 sessionStorage.removeItem('nickname');
                 sessionStorage.removeItem("Authorization");
-                store.commit('showModal', {code: error.response.data.status, message: error.response.data.message, callback: () => {}});
+                store.commit('showModal', {code: error.response.data.status, message: error.response.data.message, callback: () => {router.push({name: "Login"})}});
             }
         } else if (error.response.status === 401) {
             store.commit('showModal', unAuthorizationResponseObject);
             return new Promise(() => {});
         } else {
-            store.commit('showModal', {code: error.response.data.status, message: error.response.data.message, callback: () => {}});
+            store.commit('showModal', {code: error.response.data.status, message: error.response.data.message, callback: () => {router.push({name: "Login"})}});
         }
         return Promise.reject(error);
     }
