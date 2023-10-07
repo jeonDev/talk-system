@@ -1,6 +1,7 @@
 package com.talk.talk.config.socket;
 
 import com.talk.talk.config.interceptor.WebSocketInterceptor;
+import com.talk.talk.config.jwt.GenerateJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +19,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     private ChatHandler chatHandler;
 
+    @Autowired
+    private GenerateJwt generateJwt;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(chatHandler, "/ws")
-                .setAllowedOrigins(corsUrl);
+                .setAllowedOrigins(corsUrl)
+                .addInterceptors(new WebSocketInterceptor(generateJwt));
     }
 }

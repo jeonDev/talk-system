@@ -2,7 +2,9 @@
   <div>
     <div class="bg-white overflow-scroll" style="height: 300px">
       <div v-for="(item, idx) in chattingList" :key="idx">
-        {{item}}
+        <span v-if="item.messageType == 'MESSAGE'">
+          {{item.data}}
+        </span>
       </div>
     </div>
 
@@ -11,11 +13,11 @@
       <div class="d-flex p-2">
         <b-form-input
             v-model="message"
+            @keyup.enter="sendMsg"
             class="me-3"
         />
         <b-button
             variant="outline-dark"
-            @keyup.enter="sendMsg"
             @click="sendMsg"
         >
           Send
@@ -33,19 +35,12 @@ export default {
   props: [ 'roomSeq' ],
   data() {
     return {
-      chattingList: [],
       message : ''
     }
   },
   computed: {
-    socketMsg: function () {
-      return this.$store.state.socketStore.message;
-    }
-  },
-  watch: {
-    socketMsg(value) {
-      this.chattingList.push(value);
-      this.message = ''
+    chattingList: function () {
+      return this.$store.state.socketStore.chattingList;
     }
   },
   methods: {
@@ -56,7 +51,8 @@ export default {
       }
     },
     sendMsg() {
-      this.$store.commit('SOCKET_SEND_MESSAGE', this.message);
+      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'message': this.message}));
+      this.message = ''
     }
   },
   created() {

@@ -1,6 +1,6 @@
 const socketStore = {
     state: {
-        message: {},
+        chattingList : [],
         socket: null,
     },
     mutations: {
@@ -9,8 +9,9 @@ const socketStore = {
             state.socket.onopen = () => {
                 console.log("연결완료");
                 state.socket.onmessage = ({data}) => {
-                    console.log(data);
-                    state.message = Object.assign({}, data);
+                    const jsonData = JSON.parse(data);
+                    state.chattingList.push(jsonData);
+                    console.log(state.chattingList)
                 }
             }
         },
