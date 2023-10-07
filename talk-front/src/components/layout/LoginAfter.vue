@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-nav class="d-flex justify-content-between">
-      <div class="d-flex w-75">
+    <b-nav class="d-flex justify-content-between p-1">
+      <div class="d-flex">
         <b-nav-item>
           <router-link
               class="nav-router"
@@ -26,10 +26,9 @@
           </router-link>
         </b-nav-item>
       </div>
-
     </b-nav>
     <hr/>
-    <section>
+    <section class="container-fluid min-vh-100">
       <router-view></router-view>
     </section>
   </div>

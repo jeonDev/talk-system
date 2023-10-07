@@ -1,19 +1,16 @@
 const socketStore = {
     state: {
-        message: '',
+        message: {},
         socket: null,
-        isConnected: false
-    },
-    getters: {
     },
     mutations: {
         SOCKET_CONNECT(state) {
             state.socket = new WebSocket("ws://localhost:8000/ws");
             state.socket.onopen = () => {
-                state.isConnected = true;
                 console.log("연결완료");
                 state.socket.onmessage = ({data}) => {
-                    state.message = data;
+                    console.log(data);
+                    state.message = Object.assign({}, data);
                 }
             }
         },
