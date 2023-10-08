@@ -52,7 +52,7 @@ export default {
       }
     },
     sendMsg() {
-      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'message': this.message}));
+      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'roomSeq': this.roomSeq, 'message': this.message}));
       this.message = ''
     }
   },

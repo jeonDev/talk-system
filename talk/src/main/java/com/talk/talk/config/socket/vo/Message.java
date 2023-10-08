@@ -10,4 +10,5 @@ import lombok.*;
 public class Message<T> {
     private MessageType messageType;
     private T data;
+    private Long roomSeq;
 }
