@@ -15,6 +15,9 @@ const socketStore = {
                 }
             }
         },
+        CHATTING_LIST_RESET(state, chattingList) {
+          state.chattingList = chattingList;
+        },
         SOCKET_SEND_MESSAGE(state, message) {
             state.socket.send(message);
         }
