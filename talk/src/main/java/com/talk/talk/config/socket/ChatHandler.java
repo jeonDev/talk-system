@@ -6,6 +6,7 @@ import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
+import com.talk.talk.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -28,6 +30,7 @@ public class ChatHandler extends TextWebSocketHandler {
 //    private final static Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
 
     private final GenerateJwt generateJwt;
+    private final RoomService roomService;
 
     /** Socket 접속 */
     @Override
@@ -44,13 +47,38 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        // 0. Message Builder
         Message<Object> messageInfo = messageToJsonSendMessage(message.getPayload());
+
+        // 1. Send Message Set
         ObjectMapper mapper = new ObjectMapper();
         String sendMsg = mapper.writeValueAsString(messageInfo);
 
 
-        for (WebSocketSessionInfo s : sessions) {
-            s.getWebSocketSession().sendMessage(new TextMessage(sendMsg));
+        // 2. Send
+        // Type : Message
+        if(MessageType.MESSAGE == messageInfo.getMessageType()) {
+            log.info(messageInfo.toString());
+            log.info(sendMsg);
+            // 2-1. Room User Select
+            List<Long> roomUsers = roomService.selectRoomList(messageInfo.getRoomSeq())
+                    .stream()
+                    .map(r -> r.getUser().getUserSeq())
+                    .collect(Collectors.toList());
+
+            sessions.parallelStream()
+                    .filter(s -> roomUsers.contains(s.getUserSeq()))
+                    .forEach(s -> {
+                        try {
+                            if(session.isOpen()) {
+                                s.getWebSocketSession().sendMessage(new TextMessage(sendMsg));
+                            } else {
+                                log.info("USER_SEQ : {}", s.getUserSeq());
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
         }
         super.handleTextMessage(session, message);
     }

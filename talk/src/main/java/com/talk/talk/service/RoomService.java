@@ -100,7 +100,14 @@ public class RoomService {
     /**
      * 채팅방 조회
      * */
-    public List<RoomResList> selectRoomList(Long userSeq) {
+    public List<RoomResList> selectUserRoomList(Long userSeq) {
         return roomUserRepository.findByRoomList(userSeq);
+    }
+
+    /**
+     * 채팅방 고객 조회
+     * */
+    public List<RoomUser> selectRoomList(Long roomSeq) {
+        return roomUserRepository.findByRoomUserList(roomSeq);
     }
 }

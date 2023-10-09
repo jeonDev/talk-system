@@ -57,10 +57,10 @@ public class RoomController {
      * 채팅방 조회
      * */
     @GetMapping("/user/room/list")
-    public ApiResponse<List<RoomResList>> selectRoomList() {
+    public ApiResponse<List<RoomResList>> selectUserRoomList() {
         Long userSeq = CommonUtils.getUserInfo().getUserSeq();
 
-        List<RoomResList> result = roomService.selectRoomList(userSeq);
+        List<RoomResList> result = roomService.selectUserRoomList(userSeq);
 
         return ApiResponse.<List<RoomResList>>builder()
                 .data(result)

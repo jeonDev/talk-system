@@ -46,4 +46,12 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
     )
     Optional<RoomUser> findByRoomSeqAndUserSeq(@Param("roomSeq") Long roomSeq,
                                                @Param("userSeq") Long userSeq);
+
+    @Query(
+            value = "SELECT ru" +
+                    "  FROM RoomUser ru" +
+                    "  JOIN fetch ru.user" +
+                    " WHERE ru.room.roomSeq = :roomSeq"
+    )
+    List<RoomUser> findByRoomUserList(@Param("roomSeq") Long roomSeq);
 }
