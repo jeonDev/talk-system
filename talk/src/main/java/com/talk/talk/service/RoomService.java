@@ -74,6 +74,7 @@ public class RoomService {
         if(roomSeq == null) {
             // 방 생성
             Room room = roomRepository.saveAndFlush(Room.builder().build());
+            roomSeq = room.getRoomSeq().longValue();
 
             List<RoomUser> roomUsers = new ArrayList<RoomUser>();
 
