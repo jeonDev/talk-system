@@ -14,10 +14,18 @@ public class FilterConfig {
     private GenerateJwt generateJwt;
 
     @Bean
+    public FilterRegistrationBean<RequestFilter> requestFilter() {
+        FilterRegistrationBean<RequestFilter> filterRegistrationBean = new FilterRegistrationBean<RequestFilter>(new RequestFilter());
+        filterRegistrationBean.setOrder(0);
+        return filterRegistrationBean;
+    }
+
+    @Bean
     public FilterRegistrationBean<JwtFilter> jwtFilter() {
         FilterRegistrationBean<JwtFilter> filterRegistrationBean = new FilterRegistrationBean<JwtFilter>(new JwtFilter(generateJwt));
         filterRegistrationBean.addUrlPatterns("/user/*");
         filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST);
+        filterRegistrationBean.setOrder(1);
         return filterRegistrationBean;
     }
 }

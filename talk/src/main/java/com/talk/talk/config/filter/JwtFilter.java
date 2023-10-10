@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("Request URI : {}", request.getRequestURI());
+        log.info("Authentication Request URI : {}", request.getRequestURI());
 
         String accessToken = generateJwt.resolveAccessToken(request);
         if(accessToken != null && generateJwt.validDateToken(accessToken)) {
