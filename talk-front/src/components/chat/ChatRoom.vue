@@ -4,12 +4,21 @@
       <div
           v-for="(item, idx) in chattingList"
           :key="idx"
-          :class="[item.userInfo.userSeq == getUserInfo ? 'send-msg-box' : 'receive-msg-box']"
-          class="m-3"
       >
-            <span v-if="item.messageType == 'MESSAGE'">
+        <div class="d-flex"
+             :class="[item.userInfo.userSeq == getUserInfo ? 'send-msg-box' : 'receive-msg-box']"
+        >
+          <div class="profile-box align-self-center position-relative p-2">
+            <span class="position-absolute profile-msg-box">{{item.userInfo.nickname}}</span>
+          </div>
+          <div class="p-2 m-3 w-50 msg-box">
+                <span v-if="item.messageType == 'MESSAGE'">
               {{item.data}}
             </span>
+
+          </div>
+
+        </div>
       </div>
     </div>
     <div class="fixed-bottom m-auto p-2" style="width: 500px; height: 100px">
@@ -70,9 +79,34 @@ export default {
 </script>
 <style scoped>
 .send-msg-box {
-  background: #B4B4B3;
+  justify-content: end;
 }
 .receive-msg-box {
-  background: #26577C;
+  justify-content: start;
+}
+.send-msg-box .msg-box{
+  background: #DFCCFB;
+  border-radius: 10px;
+}
+.receive-msg-box .msg-box{
+  background: #FFF8C9;
+  border-radius: 10px;
+}
+.send-msg-box .profile-box {
+}
+.receive-msg-box .profile-box {
+
+}
+.profile-box {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #DFCCFB;
+  border-radius: 15px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.profile-box .profile-msg-box {
+  top: 25%;
 }
 </style>
