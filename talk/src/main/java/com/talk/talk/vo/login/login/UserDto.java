@@ -12,12 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 
+    private Long userSeq;
     private String name;
     private String nickname;
     private TokenInfo tokenInfo;
 
     @Builder
-    public UserDto(String name, String nickname, TokenInfo tokenInfo) {
+    public UserDto(Long userSeq, String name, String nickname, TokenInfo tokenInfo) {
+        this.userSeq = userSeq;
         this.name = name;
         this.nickname = nickname;
         this.tokenInfo = tokenInfo;

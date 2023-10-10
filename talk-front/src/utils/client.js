@@ -57,6 +57,7 @@ instance.interceptors.response.use(
 
                 return instance(originRequest);
             } else {
+                sessionStorage.removeItem('userSeq');
                 sessionStorage.removeItem('name');
                 sessionStorage.removeItem('nickname');
                 sessionStorage.removeItem("Authorization");

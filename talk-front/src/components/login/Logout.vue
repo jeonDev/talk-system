@@ -9,6 +9,7 @@ export default {
   name: 'LogoutView',
   methods: {
     logout() {
+      sessionStorage.removeItem('userSeq');
       sessionStorage.removeItem('name');
       sessionStorage.removeItem('nickname');
       sessionStorage.removeItem("Authorization");

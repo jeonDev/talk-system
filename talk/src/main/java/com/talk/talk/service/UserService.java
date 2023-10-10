@@ -76,6 +76,7 @@ public class UserService {
         response.addCookie(cookie);
 
         return UserDto.builder()
+                .userSeq(user.getUserSeq())
                 .name(user.getName())
                 .nickname(user.getNickname())
                 .tokenInfo(token)

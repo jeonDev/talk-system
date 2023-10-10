@@ -67,8 +67,10 @@ export default {
       const res = await login(this.loginRequest);
       if(res.status === 'SUCCESS') {
         const accessToken = res.data.tokenInfo.token;
+        const userSeq = res.data.userSeq;
         const name = res.data.name;
         const nickname = res.data.nickname;
+        sessionStorage.setItem('userSeq', userSeq);
         sessionStorage.setItem('name', name);
         sessionStorage.setItem('nickname', nickname);
         sessionStorage.setItem('Authorization', accessToken);
