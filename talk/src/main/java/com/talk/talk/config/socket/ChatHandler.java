@@ -1,43 +1,35 @@
 package com.talk.talk.config.socket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.talk.talk.config.jwt.GenerateJwt;
+import com.talk.talk.config.jwt.vo.UserInfo;
+import com.talk.talk.config.socket.service.SocketService;
 import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
-import com.talk.talk.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
 public class ChatHandler extends TextWebSocketHandler {
 
-    private final static Set<WebSocketSessionInfo> sessions = ConcurrentHashMap.newKeySet();
-//    private final static Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();
-
-    private final GenerateJwt generateJwt;
-    private final RoomService roomService;
+    private final static List<WebSocketSessionInfo> sessions = new ArrayList<>();
+    private final SocketService socketService;
 
     /** Socket 접속 */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        Long userSeq = getUserSeqToWebSocketSession(session);
+        UserInfo userInfo = socketService.getUserSeqToWebSocketSession(session);
         WebSocketSessionInfo sessionInfo = WebSocketSessionInfo.builder()
-                .userSeq(userSeq)
+                .userInfo(userInfo)
                 .webSocketSession(session)
                 .build();
 
@@ -48,37 +40,16 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         // 0. Message Builder
-        Message<Object> messageInfo = messageToJsonSendMessage(message.getPayload());
+        Message<Object> messageInfo = socketService.messageToJsonSendMessage(sessions, session, message.getPayload());
 
         // 1. Send Message Set
         ObjectMapper mapper = new ObjectMapper();
         String sendMsg = mapper.writeValueAsString(messageInfo);
 
-
         // 2. Send
         // Type : Message
         if(MessageType.MESSAGE == messageInfo.getMessageType()) {
-            log.info(messageInfo.toString());
-            log.info(sendMsg);
-            // 2-1. Room User Select
-            List<Long> roomUsers = roomService.selectRoomList(messageInfo.getRoomSeq())
-                    .stream()
-                    .map(r -> r.getUser().getUserSeq())
-                    .collect(Collectors.toList());
-
-            sessions.parallelStream()
-                    .filter(s -> roomUsers.contains(s.getUserSeq()))
-                    .forEach(s -> {
-                        try {
-                            if(session.isOpen()) {
-                                s.getWebSocketSession().sendMessage(new TextMessage(sendMsg));
-                            } else {
-                                log.info("USER_SEQ : {}", s.getUserSeq());
-                            }
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+            socketService.sendMessage(sessions, session, messageInfo, sendMsg);
         }
         super.handleTextMessage(session, message);
     }
@@ -86,48 +57,10 @@ public class ChatHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info(session + " Client Connection Closed : " + status);
-        sessions.remove(session);
+        sessions.stream()
+                .filter(item -> session.equals(item.getWebSocketSession()))
+                .findFirst()
+                .ifPresent(item -> sessions.remove(item));
         super.afterConnectionClosed(session, status);
     }
-
-
-
-    /**
-     * Web Socket Connect UserSeq Get
-     * */
-    private Long getUserSeqToWebSocketSession(WebSocketSession session) {
-        Map<String, Object> cookie = session.getHandshakeHeaders().get("cookie")
-                .stream()
-                .filter(item -> "refreshToken".equals(item.split("=")[0]))
-                .map(item -> item.split("="))
-                .collect(Collectors.toMap(item -> item[0], item -> item[1]));
-        String refreshToken = (String)cookie.get("refreshToken");
-        String subject = generateJwt.getTokenForSubject(refreshToken);
-        return Long.parseLong(subject);
-    }
-
-    /**
-     * JSON 메시지 전송
-     * */
-    private Message<Object> messageToJsonSendMessage(String payload) throws JsonProcessingException {
-        JSONObject jsonObject = new JSONObject(payload);
-
-        Object msg = jsonObject.getString("message");
-        String messageType = jsonObject.getString("type");
-        Long roomSeq = Long.parseLong(jsonObject.getString("roomSeq"));
-
-        return Message.builder()
-                .roomSeq(roomSeq)
-                .data(msg)
-                .messageType(getMessageType(messageType))
-                .build();
-    }
-
-    private MessageType getMessageType(String messageType) {
-        switch (messageType) {
-            case "MESSAGE" : return MessageType.MESSAGE;
-            default: return MessageType.MESSAGE;
-        }
-    }
-
 }

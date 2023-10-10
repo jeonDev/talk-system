@@ -100,5 +100,11 @@ public class UserService {
         }
     }
 
+    /**
+     * 회원정보조회
+     * */
+    public User selectUser(Long userSeq) {
+        return userRepository.findById(userSeq).orElse(null);
+    }
 
 }

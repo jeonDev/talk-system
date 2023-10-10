@@ -11,4 +11,5 @@ public class Message<T> {
     private MessageType messageType;
     private T data;
     private Long roomSeq;
+    private ChattingUserInfo userInfo;
 }

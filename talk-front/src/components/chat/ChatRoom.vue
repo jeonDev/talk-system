@@ -1,13 +1,17 @@
 <template>
   <div>
     <div class="bg-white overflow-scroll" style="height: 300px">
-      <div v-for="(item, idx) in chattingList" :key="idx">
-        <span v-if="item.messageType == 'MESSAGE'">
-          {{item.data}}
-        </span>
+      <div
+          v-for="(item, idx) in chattingList"
+          :key="idx"
+          :class="[item.userInfo.userSeq == getUserInfo ? 'send-msg-box' : 'receive-msg-box']"
+          class="m-3"
+      >
+            <span v-if="item.messageType == 'MESSAGE'">
+              {{item.data}}
+            </span>
       </div>
     </div>
-
     <div class="fixed-bottom m-auto p-2" style="width: 500px; height: 100px">
       <hr/>
       <div class="d-flex p-2">
@@ -29,7 +33,6 @@
 
 <script>
 import {selectRoomChattingList} from "@/request/chatting";
-
 export default {
   name: 'ChatRoomView',
   props: [ 'roomSeq' ],
@@ -41,6 +44,9 @@ export default {
   computed: {
     chattingList: function () {
       return this.$store.state.socketStore.chattingList;
+    },
+    getUserInfo: function () {
+      return sessionStorage.getItem("userSeq");
     }
   },
   methods: {
@@ -57,11 +63,16 @@ export default {
     }
   },
   created() {
+    this.$store.commit('SET_ROOM_ENTRANCE', this.roomSeq);
     this.selectRoomChattingList();
   }
 }
 </script>
-
 <style scoped>
-
+.send-msg-box {
+  background: #B4B4B3;
+}
+.receive-msg-box {
+  background: #26577C;
+}
 </style>
