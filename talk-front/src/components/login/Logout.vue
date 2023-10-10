@@ -1,14 +1,16 @@
 <template>
   <div>
-    나 로그아웃
   </div>
 </template>
 
 <script>
+import {logout} from "@/request/login";
+
 export default {
   name: 'LogoutView',
   methods: {
-    logout() {
+    async logout() {
+      await logout()
       sessionStorage.removeItem('userSeq');
       sessionStorage.removeItem('name');
       sessionStorage.removeItem('nickname');

@@ -35,3 +35,15 @@ export async function tokenReIssue() {
             return err.response;
         })
 }
+
+/** 로그아웃 */
+export async function logout() {
+    return await client
+        .post("/logout",{},{withCredentials:true})
+        .then((res) => {
+            return res.data;
+        })
+        .catch((err) => {
+            return err.response;
+        })
+}

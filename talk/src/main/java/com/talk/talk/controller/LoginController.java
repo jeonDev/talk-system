@@ -10,6 +10,7 @@ import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +60,17 @@ public class LoginController {
         return ApiResponse.<TokenInfo>builder()
                 .data(tokenInfo)
                 .build();
+    }
+
+    /**
+     * Logout
+     * */
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return ApiResponse.<Void>builder().build();
     }
 }
