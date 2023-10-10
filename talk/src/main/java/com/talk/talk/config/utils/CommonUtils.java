@@ -10,7 +10,7 @@ public class CommonUtils {
     public static UserInfo getUserInfo() {
         UserInfo userInfo = new UserInfo();
         Authentication authentication = TalkSecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getAuthentication() instanceof UserInfo) {
+        if(authentication != null && authentication.getAuthentication() instanceof UserInfo) {
             userInfo = (UserInfo) authentication.getAuthentication();
         }
         return userInfo;
