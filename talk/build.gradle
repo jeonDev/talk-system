@@ -32,7 +32,8 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
 
 	implementation group: 'org.json', name: 'json', version: '20210307'
-
+	// MongoDB
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	// Jasypt
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'

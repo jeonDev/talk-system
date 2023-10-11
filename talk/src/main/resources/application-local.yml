@@ -7,10 +7,18 @@ spring:
     url: jdbc:mysql://localhost:3306/talk?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: talk
     password: talk
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      authentication-database: admin
+      username: talk
+      password: talk
+      database: talk
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       properties:
         hibernate:
           format_sql: true
