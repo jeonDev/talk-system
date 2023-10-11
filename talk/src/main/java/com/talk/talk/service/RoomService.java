@@ -10,10 +10,10 @@ import com.talk.talk.domain.user.UserRepository;
 import com.talk.talk.vo.room.RoomInviteReqDto;
 import com.talk.talk.vo.room.RoomInviteResDto;
 import com.talk.talk.vo.room.RoomResList;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +65,7 @@ public class RoomService {
                 .build();
     }
 
+    @Transactional
     public RoomInviteResDto roomInvite(RoomInviteReqDto request, Long userSeq) {
 
         // 방 존재 여부 체크
