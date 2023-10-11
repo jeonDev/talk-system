@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-white overflow-scroll" style="height: 300px">
+    <div class="bg-white overflow-scroll scroll" style="height: 300px">
       <div
           v-for="(item, idx) in chattingList"
           :key="idx"
@@ -8,10 +8,10 @@
         <div class="d-flex"
              :class="[item.userInfo.userSeq == getUserInfo ? 'send-msg-box' : 'receive-msg-box']"
         >
-          <div class="profile-box align-self-center position-relative p-2">
-            <span class="position-absolute profile-msg-box">{{item.userInfo.nickname}}</span>
+          <div class="profile-box align-self-center p-2 m-1">
+            <span class="profile-msg-box">{{item.userInfo.nickname}}</span>
           </div>
-          <div class="p-2 m-3 w-50 msg-box">
+          <div class="p-2 m-2 w-75 msg-box">
                 <span v-if="item.messageType == 'MESSAGE'">
               {{item.data}}
             </span>
@@ -80,6 +80,7 @@ export default {
 <style scoped>
 .send-msg-box {
   justify-content: end;
+  flex-direction: row-reverse;
 }
 .receive-msg-box {
   justify-content: start;
@@ -92,14 +93,10 @@ export default {
   background: #FFF8C9;
   border-radius: 10px;
 }
-.send-msg-box .profile-box {
-}
-.receive-msg-box .profile-box {
 
-}
 .profile-box {
   width: 50px;
-  height: 50px;
+  height: 40px;
   border: 1px solid #DFCCFB;
   border-radius: 15px;
   overflow:hidden;
@@ -108,5 +105,15 @@ export default {
 }
 .profile-box .profile-msg-box {
   top: 25%;
+}
+
+/* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll {
+  -ms-overflow-style: none; /* 인터넷 익스플로러 */
+  scrollbar-width: none; /* 파이어폭스 */
 }
 </style>
