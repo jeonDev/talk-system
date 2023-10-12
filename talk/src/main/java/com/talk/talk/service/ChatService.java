@@ -2,6 +2,7 @@ package com.talk.talk.service;
 
 import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.socket.vo.ChattingUserInfo;
 import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.domain.roomUser.RoomUser;
 import com.talk.talk.domain.roomUser.RoomUserRepository;
@@ -38,11 +39,13 @@ public class ChatService {
     @Transactional
     public Chatting chattingSave(Message<?> message) {
         Chatting chatting = Chatting.builder()
-                .userSeq(message.getUserInfo().getUserSeq())
-                .name(message.getUserInfo().getName())
-                .nickname(message.getUserInfo().getNickname())
+                .userInfo(ChattingUserInfo.builder()
+                        .userSeq(message.getUserInfo().getUserSeq())
+                        .name(message.getUserInfo().getName())
+                        .nickname(message.getUserInfo().getNickname())
+                        .build())
                 .roomSeq(message.getRoomSeq())
-                .messageType(message.getMessageType().toString())
+                .messageType(message.getMessageType())
                 .data(message.getData().toString())
                 .build();
 
