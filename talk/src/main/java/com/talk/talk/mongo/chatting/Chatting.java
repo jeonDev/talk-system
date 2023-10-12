@@ -1,10 +1,9 @@
 package com.talk.talk.mongo.chatting;
 
-import jakarta.persistence.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "CHATTING")
+@Document("chatting")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

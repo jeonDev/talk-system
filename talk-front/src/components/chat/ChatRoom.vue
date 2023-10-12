@@ -62,7 +62,7 @@ export default {
     async selectRoomChattingList() {
       const result = await selectRoomChattingList(this.roomSeq);
       if(result.status == 'SUCCESS') {
-        if(result.data != null && result.data.size > 0) this.$store.commit('CHATTING_LIST_RESET', result.data);
+        if(result.data != null && result.data.length > 0) this.$store.commit('CHATTING_LIST_RESET', result.data);
         else this.$store.commit('CHATTING_LIST_RESET', []);
       }
     },
