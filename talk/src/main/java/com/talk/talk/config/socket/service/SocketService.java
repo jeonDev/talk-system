@@ -9,6 +9,7 @@ import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.mongo.chatting.Chatting;
+import com.talk.talk.service.ChatService;
 import com.talk.talk.service.RoomService;
 import com.talk.talk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SocketService {
 
+    private final ChatService chatService;
     private final RoomService roomService;
     private final UserService userService;
     private final GenerateJwt generateJwt;
@@ -36,16 +38,16 @@ public class SocketService {
     /** Chatting Send Message */
     public void sendMessage(List<WebSocketSessionInfo> sessions,
                             WebSocketSession session,
-                            Message messageInfo,
+                            Message<?> messageInfo,
                             String sendMsg) {
         // 1. Room User Select
         List<Long> roomUsers = roomService.selectRoomList(messageInfo.getRoomSeq())
                 .stream()
                 .map(r -> r.getUser().getUserSeq())
-                .collect(Collectors.toList());
+                .toList();
 
         // 2. Room Chatting Save (NoSQL - MongoDB) TODO
-        Chatting chatting = roomService.chattingSave(messageInfo);
+        Chatting chatting = chatService.chattingSave(messageInfo);
 
         // 3. Send Msg
         sessions.stream()
