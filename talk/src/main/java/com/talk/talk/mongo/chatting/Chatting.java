@@ -10,8 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Chatting {
-    @Id
-    private Long chattingSeq;
+
     private Long userSeq;
     private String name;
     private String nickname;

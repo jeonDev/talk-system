@@ -8,6 +8,7 @@ import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
 import com.talk.talk.domain.user.User;
+import com.talk.talk.mongo.chatting.Chatting;
 import com.talk.talk.service.RoomService;
 import com.talk.talk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class SocketService {
                 .collect(Collectors.toList());
 
         // 2. Room Chatting Save (NoSQL - MongoDB) TODO
+        Chatting chatting = roomService.chattingSave(messageInfo);
 
         // 3. Send Msg
         sessions.stream()

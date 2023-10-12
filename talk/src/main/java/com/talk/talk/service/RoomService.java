@@ -1,12 +1,15 @@
 package com.talk.talk.service;
 
 import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.domain.room.Room;
 import com.talk.talk.domain.room.RoomRepository;
 import com.talk.talk.domain.roomUser.RoomUser;
 import com.talk.talk.domain.roomUser.RoomUserRepository;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
+import com.talk.talk.mongo.chatting.Chatting;
+import com.talk.talk.mongo.chatting.ChattingRepository;
 import com.talk.talk.vo.room.RoomInviteReqDto;
 import com.talk.talk.vo.room.RoomInviteResDto;
 import com.talk.talk.vo.room.RoomResList;
@@ -30,6 +33,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
     private final UserRepository userRepository;
+    private final ChattingRepository chattingRepository;
 
     /**
      * 채팅방 초대
@@ -111,5 +115,21 @@ public class RoomService {
      * */
     public List<RoomUser> selectRoomList(Long roomSeq) {
         return roomUserRepository.findByRoomUserList(roomSeq);
+    }
+
+
+    /** Chatting Save */
+    @Transactional
+    public Chatting chattingSave(Message<String> message) {
+        Chatting chatting = Chatting.builder()
+                .userSeq(message.getUserInfo().getUserSeq())
+                .name(message.getUserInfo().getName())
+                .nickname(message.getUserInfo().getNickname())
+                .roomSeq(message.getRoomSeq())
+                .messageType(message.getMessageType().toString())
+                .data(message.getData())
+                .build();
+
+        return chattingRepository.save(chatting);
     }
 }
