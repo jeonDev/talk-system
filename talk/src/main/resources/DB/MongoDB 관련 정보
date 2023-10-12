@@ -1,0 +1,8 @@
+docker pull mongo
+docker run --name mongodb -d -p 27017:27017 -docker run --name mongodb -d -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=root mongo
+sudo docker exec -it mongodb mongosh admin -u root -p root
+
+
+use talk;
+db.createCollection("chatting"); // Collection생성
+db.createUser({user:"talk", pwd:"talk", roles:["readWrite"]});
