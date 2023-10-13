@@ -2,6 +2,7 @@ package com.talk.talk.config.exception;
 
 import com.talk.talk.config.vo.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +45,23 @@ public class HandlerException {
         ApiResponse<?> response = ApiResponse.builder()
                 .status(e.getStatusCode().toString())
                 .message(failValidMessage)
+                .build();
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * DataIntegrityViolationException
+     * */
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<?> dataIntegrityViolationException(final DataIntegrityViolationException e) {
+        log.error("DataIntegrityViolationException : {}"
+                , e.getMessage()
+                , e
+        );
+
+        ApiResponse<?> response = ApiResponse.builder()
+                .status(ExceptionEnum.DATA_DUPLICATE.getCode())
+                .message(ExceptionEnum.DATA_DUPLICATE.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }

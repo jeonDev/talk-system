@@ -16,6 +16,9 @@ public enum ExceptionEnum {
     // Room Exception
     OVER_INVITE_SIZE("R1", "채팅방 최대 인원을 초과하였습니다"),
 
+    // Database
+    DATA_DUPLICATE("500", "이미 등록된 데이터 입니다."),
+
     // Etc
     INVALID_ACCESS("98", "비정상적인 접근입니다."),
     SYSTEM_ERROR("99", "System Error.");
