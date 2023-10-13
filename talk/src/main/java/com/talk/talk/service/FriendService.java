@@ -8,10 +8,7 @@ import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.domain.friend.FriendRepository;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
-import com.talk.talk.vo.friend.FriendListResDto;
-import com.talk.talk.vo.friend.FriendRequestReqDto;
-import com.talk.talk.vo.friend.FriendSearchReqDto;
-import com.talk.talk.vo.friend.FriendSearchResDto;
+import com.talk.talk.vo.friend.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,20 +52,27 @@ public class FriendService {
     /**
      * 친구 요청
      * */
-    public Friend requestFriend(FriendRequestReqDto request) {
-        log.info(request.toString());
+    public FriendRequestResDto requestFriend(FriendRequestReqDto request) {
+        // 1. My User Check
         Optional<User> userOpt = userRepository.findById(request.getMyUserSeq());
         if(userOpt.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
 
+        // 2. Friend User Check
         Optional<User> requestUserOpt = userRepository.findById(request.getUserSeq());
         if(requestUserOpt.isEmpty()) throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
 
+        // 3. Friend Request save
         Friend friend = Friend.builder()
                 .user(userOpt.get())
                 .friendUser(requestUserOpt.get())
                 .build();
 
-        return friendRepository.save(friend);
+        friend = friendRepository.save(friend);
 
+        return FriendRequestResDto.builder()
+                .userSeq(friend.getFriendUser().getUserSeq())
+                .name(friend.getFriendUser().getName())
+                .nickname(friend.getFriendUser().getNickname())
+                .build();
     }
 }

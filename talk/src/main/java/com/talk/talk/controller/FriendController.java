@@ -6,10 +6,8 @@ import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.service.FriendService;
-import com.talk.talk.vo.friend.FriendListResDto;
-import com.talk.talk.vo.friend.FriendRequestReqDto;
-import com.talk.talk.vo.friend.FriendSearchReqDto;
-import com.talk.talk.vo.friend.FriendSearchResDto;
+import com.talk.talk.vo.friend.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,13 +53,14 @@ public class FriendController {
      * 친구 요청
      * */
     @PostMapping("/user/friend/request")
-    public ApiResponse<Void> userFriendRequest(@RequestBody FriendRequestReqDto request) {
+    public ApiResponse<FriendRequestResDto> userFriendRequest(@RequestBody @Valid FriendRequestReqDto request) {
 
         request.setMyUserSeq(CommonUtils.getUserInfo().getUserSeq());
-        Friend friend = friendService.requestFriend(request);
-        if(friend == null) throw new ApiException(ExceptionEnum.SYSTEM_ERROR);
+        FriendRequestResDto result = friendService.requestFriend(request);
+        if(result == null) throw new ApiException(ExceptionEnum.SYSTEM_ERROR);
 
-        return ApiResponse.<Void>builder()
+        return ApiResponse.<FriendRequestResDto>builder()
+                .data(result)
                 .build();
     }
 
