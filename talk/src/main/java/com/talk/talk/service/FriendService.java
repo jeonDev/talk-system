@@ -30,11 +30,7 @@ public class FriendService {
      */
     public List<FriendSearchResDto> selectRecommendFriendList(FriendSearchReqDto request) {
         UserInfo userInfo = CommonUtils.getUserInfo();
-        List<User> list = userRepository.findByFriendSearch(userInfo.getUserSeq(), StringUtils.nvlStr(request.getNameOrNickname()));
-
-        return list.stream()
-                .map(FriendSearchResDto::new)
-                .collect(Collectors.toList());
+        return userRepository.findByFriendSearch(userInfo.getUserSeq(), StringUtils.nvlStr(request.getNameOrNickname()));
     }
 
     /**
