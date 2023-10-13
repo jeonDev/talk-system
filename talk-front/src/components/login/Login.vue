@@ -28,7 +28,7 @@
 
 <script>
 import {login} from "@/request/login";
-import {checkId, checkPassword, MessageEnum} from "@/utils/utils";
+import {checkId, checkPassword, MessageEnum, modalSetting} from "@/utils/utils";
 
 export default {
   name: 'LoginView',
@@ -57,22 +57,19 @@ export default {
         sessionStorage.setItem('Authorization', accessToken);
         window.location.href = "/main";
       } else {
-        this.modalSetting(res.status, res.message, () => {})
+        modalSetting(res.status, res.message, () => {})
       }
     },
     parameterCheck() {
       let isCheck = true;
       if(!checkId(this.loginRequest.id)) {
-        this.modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
+        modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
         isCheck = false;
       } else if (!checkPassword(this.loginRequest.password)) {
-        this.modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
+        modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
         isCheck = false;
       }
       return isCheck;
-    },
-    modalSetting(code, message, callback) {
-      this.$store.commit('showModal', {code: code, message: message, callback: callback});
     }
   }
 }

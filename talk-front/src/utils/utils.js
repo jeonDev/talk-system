@@ -1,3 +1,5 @@
+import store from "@/store";
+
 /** 휴대전화 번호 정규식 체크 */
 const checkPhoneNumber = (value) => {
     const regex =  /^(\d{2,3})(\d{3,4})(\d{4})$/;
@@ -47,6 +49,18 @@ const nvlStr = (value) => {
     return isStringEmpty(value) ? '' : value
 }
 
+/**
+ * Modal 호출
+ * code | message | callback
+ * */
+const modalSetting = (code, message, callback) => {
+    store.commit('showModal', {
+        code: code,
+        message: message,
+        callback: callback
+    });
+}
+
 export {
     checkPassword,
     checkEmail,
@@ -54,5 +68,6 @@ export {
     checkId,
     MessageEnum,
     isStringEmpty,
-    nvlStr
+    nvlStr,
+    modalSetting
 }

@@ -60,7 +60,7 @@
 
 <script>
 import {signup} from "@/request/login";
-import {checkEmail, checkId, checkPassword, checkPhoneNumber, MessageEnum} from "@/utils/utils";
+import {checkEmail, checkId, checkPassword, checkPhoneNumber, MessageEnum, modalSetting} from "@/utils/utils";
 
 export default {
   name: 'SignupView',
@@ -85,37 +85,34 @@ export default {
       const res = await signup(this.signupRequest);
 
       if(res.status === 'SUCCESS') {
-        this.modalSetting(res.status, res.message, () => this.$router.push({name: "Login"}));
+        modalSetting(res.status, res.message, () => this.$router.push({name: "Login"}));
       }
-      else this.modalSetting(res.status, res.message, () => {});
+      else modalSetting(res.status, res.message, () => {});
 
     },
     parameterCheck() {
       let isCheck = true;
       // 정규식 체크
       if(!checkId(this.signupRequest.id)) {
-        this.modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
+        modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
         isCheck = false;
       } else if (!checkPassword(this.signupRequest.password)) {
-        this.modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
+        modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
         isCheck = false;
       } else if (this.signupRequest.name == null || this.signupRequest.name === '') {
-        this.modalSetting('NAME_CHECK', MessageEnum.NAME_CHECK, () => {});
+        modalSetting('NAME_CHECK', MessageEnum.NAME_CHECK, () => {});
         isCheck = false;
       } else if (this.signupRequest.nickname == null || this.signupRequest.nickname === '') {
-        this.modalSetting('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK, () => {});
+        modalSetting('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK, () => {});
         isCheck = false;
       } else if (!checkPhoneNumber(this.signupRequest.phone)) {
-        this.modalSetting('PHONE_CHECK', MessageEnum.PHONE_CHECK, () => {});
+        modalSetting('PHONE_CHECK', MessageEnum.PHONE_CHECK, () => {});
         isCheck = false;
       } else if (!checkEmail(this.signupRequest.email)) {
-        this.modalSetting('EMAIL_CHECK', MessageEnum.EMAIL_CHECK, () => {});
+        modalSetting('EMAIL_CHECK', MessageEnum.EMAIL_CHECK, () => {});
         isCheck = false;
       }
       return isCheck;
-    },
-    modalSetting(code, message, callback) {
-      this.$store.commit('showModal', {code: code, message: message, callback: callback});
     }
   }
 }
