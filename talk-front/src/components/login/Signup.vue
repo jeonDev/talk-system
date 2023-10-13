@@ -55,13 +55,6 @@
     >
       회원가입
     </b-button>
-
-    <b-modal
-        hide-footer
-        v-model="modal.isShow"
-    >
-      [{{modal.code}}] {{modal.message}}
-    </b-modal>
   </div>
 </template>
 
@@ -80,11 +73,6 @@ export default {
         nickname: '',
         phone: '',
         email: ''
-      },
-      modal : {
-        code: '',
-        message: '',
-        isShow: false
       }
     }
   },
@@ -96,44 +84,39 @@ export default {
 
       const res = await signup(this.signupRequest);
 
-      if(res.status === 'SUCCESS') this.$router.push({name: "Login"})
-      else this.setErrorMsg(res.status, res.message);
+      if(res.status === 'SUCCESS') {
 
-    },
-    setErrorMsg(code, message) {
-      this.modal.code = code;
-      this.modal.message = message;
-      this.showModal();
-    },
-    showModal() {
-      this.modal.isShow = true;
-    },
-    hideModal() {
-      this.modal.isShow = false;
+        this.$router.push({name: "Login"});
+      }
+      else this.modalSetting(res.status, res.message, () => {});
+
     },
     parameterCheck() {
       let isCheck = true;
       // 정규식 체크
       if(!checkId(this.signupRequest.id)) {
-        this.setErrorMsg('ID_CHECK', MessageEnum.ID_CHECK);
+        this.modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
         isCheck = false;
       } else if (!checkPassword(this.signupRequest.password)) {
-        this.setErrorMsg('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK);
+        this.modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
         isCheck = false;
       } else if (this.signupRequest.name == null || this.signupRequest.name === '') {
-        this.setErrorMsg('NAME_CHECK', MessageEnum.NAME_CHECK);
+        this.modalSetting('NAME_CHECK', MessageEnum.NAME_CHECK, () => {});
         isCheck = false;
       } else if (this.signupRequest.nickname == null || this.signupRequest.nickname === '') {
-        this.setErrorMsg('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK);
+        this.modalSetting('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK, () => {});
         isCheck = false;
       } else if (!checkPhoneNumber(this.signupRequest.phone)) {
-        this.setErrorMsg('PHONE_CHECK', MessageEnum.PHONE_CHECK);
+        this.modalSetting('PHONE_CHECK', MessageEnum.PHONE_CHECK, () => {});
         isCheck = false;
       } else if (!checkEmail(this.signupRequest.email)) {
-        this.setErrorMsg('EMAIL_CHECK', MessageEnum.EMAIL_CHECK);
+        this.modalSetting('EMAIL_CHECK', MessageEnum.EMAIL_CHECK, () => {});
         isCheck = false;
       }
       return isCheck;
+    },
+    modalSetting(code, message, callback) {
+      this.$store.commit('showModal', {code: code, message: message, callback: () => callback});
     }
   }
 }

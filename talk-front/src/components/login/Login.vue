@@ -23,14 +23,6 @@
     >
       Login
     </b-button>
-
-    <b-modal
-        hide-footer
-        v-model="modal.isShow"
-    >
-      [{{modal.code}}] {{modal.message}}
-    </b-modal>
-
   </div>
 </template>
 
@@ -45,24 +37,13 @@ export default {
       loginRequest : {
         id: '',
         password: ''
-      },
-      modal : {
-        code: '',
-        message: '',
-        isShow: false
       }
     }
   },
   methods: {
     async loginClick() {
       // 정규식 체크
-      if(!checkId(this.loginRequest.id)) {
-        this.setErrorMsg('ID_CHECK', MessageEnum.ID_CHECK);
-        return;
-      } else if (!checkPassword(this.loginRequest.password)) {
-        this.setErrorMsg('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK);
-        return;
-      }
+      if(!this.parameterCheck()) return;
       // login 요청
       const res = await login(this.loginRequest);
       if(res.status === 'SUCCESS') {
@@ -75,21 +56,23 @@ export default {
         sessionStorage.setItem('nickname', nickname);
         sessionStorage.setItem('Authorization', accessToken);
         window.location.href = "/main";
-        // this.$router.push({name: "Main"})
       } else {
-        this.setErrorMsg(res.status, res.message)
+        this.modalSetting(res.status, res.message, () => {})
       }
     },
-    setErrorMsg(code, message) {
-      this.modal.code = code;
-      this.modal.message = message;
-      this.showModal();
+    parameterCheck() {
+      let isCheck = true;
+      if(!checkId(this.loginRequest.id)) {
+        this.modalSetting('ID_CHECK', MessageEnum.ID_CHECK, () => {});
+        isCheck = false;
+      } else if (!checkPassword(this.loginRequest.password)) {
+        this.modalSetting('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK, () => {});
+        isCheck = false;
+      }
+      return isCheck;
     },
-    showModal() {
-      this.modal.isShow = true;
-    },
-    hideModal() {
-      this.modal.isShow = false;
+    modalSetting(code, message, callback) {
+      this.$store.commit('showModal', {code: code, message: message, callback: () => callback});
     }
   }
 }
