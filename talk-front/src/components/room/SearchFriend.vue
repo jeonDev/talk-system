@@ -69,7 +69,7 @@ export default {
     },
     async requestFriend(userSeq) {
       const result = await requestFriend({ userSeq : userSeq });
-      modalSetting(result.status, result.message, () => {});
+      modalSetting(result.status, result.message, () => {this.searchFriendList()});
     },
 
   }
