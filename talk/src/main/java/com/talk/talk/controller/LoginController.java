@@ -12,6 +12,7 @@ import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -30,7 +31,7 @@ public class LoginController {
     * 회원가입
     * */
     @PostMapping("/login/signup")
-    public ApiResponse<SignUpResDto> signUp(@RequestBody SignUpReqDto request) {
+    public ApiResponse<SignUpResDto> signUp(@RequestBody @Valid SignUpReqDto request) {
         SignUpResDto result = userService.signUp(request);
 
         return ApiResponse.<SignUpResDto>builder()
