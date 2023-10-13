@@ -19,12 +19,23 @@
     </div>
     <hr/>
     <div>
-      <div v-for="(item, idx) in friendList" :key="idx">
-        {{item.id}}
-        {{item.name}}
-        {{item.nickname}}
+      <div v-for="(item, idx) in friendList" :key="idx"
+           class="d-flex justify-content-between m-2"
+      >
+        <div>
+          <div>
+            <span class="fw-bold">{{item.nickname}}</span>
+            <span style="font-size: 12px"> ({{item.name}})</span>
+          </div>
+          <div v-if="!isStringEmpty(item.friendUserSeq)"
+               class="text-secondary"
+               style="font-size: 10px"
+          >
+            나에게 친구요청한 고객입니다
+          </div>
+        </div>
         <b-button
-            variant="outline-dark"
+            :variant="[isStringEmpty(item.friendUserSeq) ? 'outline-dark' : 'outline-primary']"
             @click="requestFriend(item.userSeq)"
         >
           친구요청
@@ -36,7 +47,7 @@
 
 <script>
 import {requestFriend, selectRecommendFriendList} from "@/request/friend";
-import {modalSetting} from "@/utils/utils";
+import {isStringEmpty, modalSetting} from "@/utils/utils";
 
 export default {
   name: 'SearchFriendView',
@@ -49,6 +60,7 @@ export default {
     }
   },
   methods: {
+    isStringEmpty,
     async searchFriendList() {
       const result = await selectRecommendFriendList(this.searchInfo.nameOrNickname);
       if(result.status === 'SUCCESS') {
