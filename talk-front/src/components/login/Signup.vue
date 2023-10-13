@@ -85,8 +85,7 @@ export default {
       const res = await signup(this.signupRequest);
 
       if(res.status === 'SUCCESS') {
-
-        this.$router.push({name: "Login"});
+        this.modalSetting(res.status, res.message, () => this.$router.push({name: "Login"}));
       }
       else this.modalSetting(res.status, res.message, () => {});
 
@@ -116,7 +115,7 @@ export default {
       return isCheck;
     },
     modalSetting(code, message, callback) {
-      this.$store.commit('showModal', {code: code, message: message, callback: () => callback});
+      this.$store.commit('showModal', {code: code, message: message, callback: callback});
     }
   }
 }

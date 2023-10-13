@@ -72,7 +72,7 @@ export default {
       return isCheck;
     },
     modalSetting(code, message, callback) {
-      this.$store.commit('showModal', {code: code, message: message, callback: () => callback});
+      this.$store.commit('showModal', {code: code, message: message, callback: callback});
     }
   }
 }
