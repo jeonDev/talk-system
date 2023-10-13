@@ -92,34 +92,13 @@ export default {
     async signUpClick() {
 
       // 정규식 체크
-      if(!checkId(this.signupRequest.id)) {
-        this.setErrorMsg('ID_CHECK', MessageEnum.ID_CHECK);
-        return;
-      } else if (!checkPassword(this.signupRequest.password)) {
-        this.setErrorMsg('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK);
-        return;
-      } else if (this.signupRequest.name == null || this.signupRequest.name === '') {
-        this.setErrorMsg('NAME_CHECK', MessageEnum.NAME_CHECK);
-        return;
-      } else if (this.signupRequest.nickname == null || this.signupRequest.nickname === '') {
-        this.setErrorMsg('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK);
-        return;
-      } else if (!checkPhoneNumber(this.signupRequest.phone)) {
-        this.setErrorMsg('PHONE_CHECK', MessageEnum.PHONE_CHECK);
-        return;
-      } else if (!checkEmail(this.signupRequest.email)) {
-        this.setErrorMsg('EMAIL_CHECK', MessageEnum.EMAIL_CHECK);
-        return;
-      }
+      if(!this.parameterCheck()) return;
 
       const res = await signup(this.signupRequest);
-      if(res.status === 'SUCCESS') {
-        this.$router.push({
-          name: "Login"
-        })
-      } else {
-        this.setErrorMsg(res.status, res.message);
-      }
+
+      if(res.status === 'SUCCESS') this.$router.push({name: "Login"})
+      else this.setErrorMsg(res.status, res.message);
+
     },
     setErrorMsg(code, message) {
       this.modal.code = code;
@@ -131,6 +110,30 @@ export default {
     },
     hideModal() {
       this.modal.isShow = false;
+    },
+    parameterCheck() {
+      let isCheck = true;
+      // 정규식 체크
+      if(!checkId(this.signupRequest.id)) {
+        this.setErrorMsg('ID_CHECK', MessageEnum.ID_CHECK);
+        isCheck = false;
+      } else if (!checkPassword(this.signupRequest.password)) {
+        this.setErrorMsg('PASSWORD_CHECK', MessageEnum.PASSWORD_CHECK);
+        isCheck = false;
+      } else if (this.signupRequest.name == null || this.signupRequest.name === '') {
+        this.setErrorMsg('NAME_CHECK', MessageEnum.NAME_CHECK);
+        isCheck = false;
+      } else if (this.signupRequest.nickname == null || this.signupRequest.nickname === '') {
+        this.setErrorMsg('NICKNAME_CHECK', MessageEnum.NICKNAME_CHECK);
+        isCheck = false;
+      } else if (!checkPhoneNumber(this.signupRequest.phone)) {
+        this.setErrorMsg('PHONE_CHECK', MessageEnum.PHONE_CHECK);
+        isCheck = false;
+      } else if (!checkEmail(this.signupRequest.email)) {
+        this.setErrorMsg('EMAIL_CHECK', MessageEnum.EMAIL_CHECK);
+        isCheck = false;
+      }
+      return isCheck;
     }
   }
 }

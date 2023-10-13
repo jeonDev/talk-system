@@ -25,13 +25,13 @@ const checkPassword = (value) => {
 }
 /** 아이디 정규식 체크 */
 const checkId = (value) => {
-    const reg = /^[a-zA-Z0-9]{8,16}$/;
+    const reg = /^[a-zA-Z0-9]{4,16}$/;
     if(value.match(reg)) return true;
     return false;
 }
 
 const MessageEnum = {
-    ID_CHECK : "아이디는 영문 & 숫자 8~16자 사이로 입력 해 주세요.",
+    ID_CHECK : "아이디는 영문 & 숫자 4~16자 사이로 입력 해 주세요.",
     PASSWORD_CHECK : "비밀번호는 영문 & 숫자 8~20자 사이로 입력 해 주세요.",
     NAME_CHECK : "이름을 입력해주세요.",
     NICKNAME_CHECK : "닉네임을 입력해주세요.",
