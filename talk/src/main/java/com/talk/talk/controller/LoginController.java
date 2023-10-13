@@ -43,7 +43,7 @@ public class LoginController {
     * 로그인
     * */
     @PostMapping("/login")
-    public ApiResponse<UserDto> login(@RequestBody LoginReqDto request, HttpServletResponse response) {
+    public ApiResponse<UserDto> login(@RequestBody @Valid LoginReqDto request, HttpServletResponse response) {
         UserDto result = userService.login(request, response);
         return ApiResponse.<UserDto>builder()
                 .data(result)
