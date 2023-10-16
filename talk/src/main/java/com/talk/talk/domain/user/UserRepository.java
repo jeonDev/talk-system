@@ -1,11 +1,12 @@
 package com.talk.talk.domain.user;
 
 import com.talk.talk.vo.friend.FriendSearchResDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -29,8 +30,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
                    "   AND (" +
                    "        u.name LIKE CONCAT('%', :nameOrNickname, '%')" +
                    "    OR  u.nickname LIKE CONCAT('%', :nameOrNickname, '%')" +
-                   "        )"
+                   "        )" +
+                   " ORDER BY f2.user.userSeq NULLS LAST"
     )
-    List<FriendSearchResDto> findByFriendSearch(@Param("userSeq") Long userSeq,
-                                                @Param("nameOrNickname") String nameOrNickname);
+    Page<FriendSearchResDto> findByFriendSearch(@Param("userSeq") Long userSeq,
+                                                @Param("nameOrNickname") String nameOrNickname,
+                                                Pageable pageable);
 }

@@ -4,8 +4,8 @@ import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
 import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;
-import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.service.FriendService;
+import com.talk.talk.vo.PageResult;
 import com.talk.talk.vo.friend.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +28,12 @@ public class FriendController {
      * 사용자 조회
      * */
     @GetMapping("/user/friend/search")
-    public ApiResponse<List<FriendSearchResDto>> searchFriendSearchList(FriendSearchReqDto request) {
-        List<FriendSearchResDto> result = friendService.selectRecommendFriendList(request);
+    public ApiResponse<PageResult<FriendSearchResDto>> searchFriendSearchList(FriendSearchReqDto request) {
+        request.setUserSeq(CommonUtils.getUserInfo().getUserSeq());
 
-        return ApiResponse.<List<FriendSearchResDto>>builder()
+        PageResult<FriendSearchResDto> result = friendService.selectRecommendFriendList(request);
+
+        return ApiResponse.<PageResult<FriendSearchResDto>>builder()
                 .data(result)
                 .build();
     }

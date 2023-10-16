@@ -1,16 +1,18 @@
 package com.talk.talk.service;
 
 import com.talk.talk.config.exception.ExceptionEnum;
-import com.talk.talk.config.jwt.vo.UserInfo;
-import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.utils.StringUtils;
 import com.talk.talk.domain.friend.Friend;
 import com.talk.talk.domain.friend.FriendRepository;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.domain.user.UserRepository;
+import com.talk.talk.vo.PageResult;
 import com.talk.talk.vo.friend.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +30,14 @@ public class FriendService {
     /**
      * 친구 찾기
      */
-    public List<FriendSearchResDto> selectRecommendFriendList(FriendSearchReqDto request) {
-        UserInfo userInfo = CommonUtils.getUserInfo();
-        return userRepository.findByFriendSearch(userInfo.getUserSeq(), StringUtils.nvlStr(request.getNameOrNickname()));
+    public PageResult<FriendSearchResDto> selectRecommendFriendList(FriendSearchReqDto request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getPerPage());
+        Page<FriendSearchResDto> result = userRepository.findByFriendSearch(request.getUserSeq(), StringUtils.nvlStr(request.getNameOrNickname()), pageable);
+
+        return PageResult.<FriendSearchResDto>builder()
+                .totalPage(result.getTotalPages())
+                .data(result.getContent())
+                .build();
     }
 
     /**

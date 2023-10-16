@@ -2,8 +2,11 @@ import client from "@/utils/client";
 
 /** 목록 조회 */
 export async function selectRecommendFriendList(request) {
+    const parameter = 'nameOrNickname=' +request.nameOrNickname +
+        '&currentPage=' + request.currentPage +
+        '&perPage=' + request.perPage
     return await client
-        .get('/user/friend/search?nameOrNickname=' + request)
+        .get('/user/friend/search?' + parameter)
         .then((res) => {
             return res.data;
         })

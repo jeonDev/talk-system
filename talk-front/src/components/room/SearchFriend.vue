@@ -42,6 +42,16 @@
         </b-button>
       </div>
     </div>
+
+    <div>
+      <b-pagination
+          v-model="page.currentPage"
+          align="center"
+          :total-rows="page.totalPage"
+          :per-page="page.perPage"
+          @click="searchFriendList"
+      />
+    </div>
   </div>
 </template>
 
@@ -56,22 +66,32 @@ export default {
       searchInfo: {
         nameOrNickname: ''
       },
-      friendList: []
+      friendList: [],
+      page: {
+        currentPage: 1,
+        totalPage: 0,
+        perPage: 10
+      }
     }
   },
   methods: {
     isStringEmpty,
     async searchFriendList() {
-      const result = await selectRecommendFriendList(this.searchInfo.nameOrNickname);
+      const request = {
+        nameOrNickname: this.searchInfo.nameOrNickname,
+        currentPage : this.page.currentPage,
+        perPage : this.page.perPage
+      }
+      const result = await selectRecommendFriendList(request);
       if(result.status === 'SUCCESS') {
-        this.friendList = result.data;
+        this.friendList = result.data.data;
+        this.page.totalPage = result.data.totalPage;
       }
     },
     async requestFriend(userSeq) {
       const result = await requestFriend({ userSeq : userSeq });
       modalSetting(result.status, result.message, () => {this.searchFriendList()});
-    },
-
+    }
   }
 }
 </script>
