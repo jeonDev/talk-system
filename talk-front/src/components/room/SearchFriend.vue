@@ -35,7 +35,7 @@
           </div>
         </div>
         <b-button
-            :variant="[isStringEmpty(item.friendUserSeq) ? 'outline-dark' : 'outline-primary']"
+            :variant="isStringEmpty(item.friendUserSeq) ? 'outline-dark' : 'outline-primary'"
             @click="requestFriend(item.userSeq)"
         >
           친구요청
