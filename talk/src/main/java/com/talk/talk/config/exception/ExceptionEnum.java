@@ -11,6 +11,7 @@ public enum ExceptionEnum {
     NOT_EXISTS_USER("L1", "존재하지 않는 고객입니다."),
     NOT_MATCHED_PASSWORD("L2", "패스워드가 틀렸습니다."),
     NOT_EXISTS_TOKEN("L99", "로그인 정보가 만료되었습니다."),
+    USING_USER_ID("L10", "사용중인 아이디입니다."),
 
 
     // Room Exception

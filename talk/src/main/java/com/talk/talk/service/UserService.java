@@ -35,6 +35,12 @@ public class UserService {
      * */
     public SignUpResDto signUp(SignUpReqDto request) {
 
+        // 1. ID 중복 체크
+        userRepository.findById(request.getId()).ifPresent(m -> {
+            throw new IllegalArgumentException(ExceptionEnum.USING_USER_ID.getCode());
+        });
+
+        // 2. 사용자 정보 세팅
         User userEntity = User.builder()
                 .id(request.getId())
                 .password(passwordEncoder.encode(request.getPassword())) // 패스워드 암호화
