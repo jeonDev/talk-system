@@ -22,6 +22,8 @@ instance.interceptors.request.use(
         if( token != null && token !== '')
             config.headers.Authorization = 'Bearer ' + token;
 
+        store.commit('showLoading');
+
         return config;
     },
     function (error) {
@@ -31,10 +33,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     function (response) {
+        store.commit('hideLoading');
         return response;
     },
     async function (error) {
-
+        store.commit('hideLoading');
         const originRequest = error.config;
 
         if(error.response.status === 401 && !originRequest._retry) {

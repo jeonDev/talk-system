@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="talk-bg">
+      <LoadingView/>
       <div class="d-flex talk-app">
         <div class="talk-app-main">
           <!-- Login Before  -->
@@ -14,7 +15,6 @@
       </div>
       <ModalView/>
     </div>
-
   </div>
 </template>
 
@@ -24,11 +24,13 @@ import LoginBefore from "@/components/layout/LoginBefore.vue";
 import LoginAfter from "@/components/layout/LoginAfter.vue";
 import {isStringEmpty} from "@/utils/utils";
 import ModalView from "@/components/layout/Modal.vue";
+import LoadingView from "@/components/layout/Loading.vue";
 
 export default {
   name: 'App',
   methods: {isStringEmpty},
   components: {
+    LoadingView,
     ModalView,
     LoginAfter,
     LoginBefore
