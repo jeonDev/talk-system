@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div>
+    <div v-if="page.totalPage > 0">
       <b-pagination
           v-model="page.currentPage"
           align="center"
