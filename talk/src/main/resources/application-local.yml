@@ -16,12 +16,12 @@ spring:
       password: talk
       database: talk
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update
-      properties:
-        hibernate:
-          format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
 
 logging:
   level:
