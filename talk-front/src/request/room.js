@@ -12,6 +12,18 @@ export async function createPrivateRoom(request) {
         })
 }
 
+/** 채팅방 초대(단체) */
+export async function createRoom(request) {
+    return await client
+        .post('/user/room/invite',request)
+        .then((res) => {
+            return res.data
+        })
+        .catch((err) => {
+            return err.response.data;
+        })
+}
+
 /** 채팅방 목록 조회 */
 export async function selectRoomList() {
     return await client

@@ -29,10 +29,12 @@
     >
       <div
           class="d-flex justify-content-end m-2"
-          style="height: 200px"
+          style="height: 220px"
           v-if="isSearchUserView"
       >
-        <SearchChattingUserView/>
+        <SearchChattingUserView
+            @cancelSearchUserView="selectFriendList"
+            style="width: 300px"/>
       </div>
       <div class="d-flex justify-content-end">
         <div
@@ -72,7 +74,7 @@ export default {
     async attendChattingRoom(roomSeq) {
       this.$router.push({name: "ChattingRoom", params: {roomSeq: roomSeq}});
     },
-    async selectFriendList() {
+    selectFriendList() {
       this.isSearchUserView = !this.isSearchUserView;
     }
   },
