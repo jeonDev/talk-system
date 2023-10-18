@@ -30,10 +30,18 @@ public class RoomController {
      * */
     @PostMapping("/user/room/invite")
     public ApiResponse<RoomInviteResDto> roomInvite(@RequestBody List<RoomInviteReqDto> request) {
-        RoomInviteReqDto dto = new RoomInviteReqDto();
-        dto.setUserSeq(CommonUtils.getUserInfo().getUserSeq());
-        request.add(dto);
-        RoomInviteResDto result = roomService.roomInvite(request);
+        RoomInviteResDto result;
+        Long userSeq = CommonUtils.getUserInfo().getUserSeq();
+
+        // 채팅인원 2명일 경우 개인 채팅방 생성으로 이동
+        if(request.size() == 1) {
+            result = roomService.roomInvite(request.get(0), userSeq);
+        } else {
+            RoomInviteReqDto dto = new RoomInviteReqDto();
+            dto.setUserSeq(userSeq);
+            request.add(dto);
+            result = roomService.roomInvite(request);
+        }
 
         return ApiResponse.<RoomInviteResDto>builder()
                 .data(result)
