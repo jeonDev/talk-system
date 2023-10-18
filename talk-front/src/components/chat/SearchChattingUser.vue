@@ -112,7 +112,10 @@ export default {
       this.$emit("cancelSearchUserView");
     },
     async createUsersRoom() {
-      await createRoom(this.roomUserList);
+      const result = await createRoom(this.roomUserList);
+      if(result.status == 'SUCCESS') {
+        this.$router.push({name: "ChattingRoom", params: {roomSeq: result.data.roomSeq}});
+      }
     }
   },
   created() {
