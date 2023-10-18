@@ -69,6 +69,7 @@
           variant="success"
           class="w-50"
           @click="createUsersRoom"
+          :disabled="roomUserList.length < 1"
       >
         생성
       </b-button>
@@ -112,9 +113,11 @@ export default {
       this.$emit("cancelSearchUserView");
     },
     async createUsersRoom() {
-      const result = await createRoom(this.roomUserList);
-      if(result.status == 'SUCCESS') {
-        this.$router.push({name: "ChattingRoom", params: {roomSeq: result.data.roomSeq}});
+      if(this.roomUserList.length > 0) {
+        const result = await createRoom(this.roomUserList);
+        if(result.status == 'SUCCESS') {
+          this.$router.push({name: "ChattingRoom", params: {roomSeq: result.data.roomSeq}});
+        }
       }
     }
   },
