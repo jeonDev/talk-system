@@ -15,9 +15,16 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
     @Query(
             value = "SELECT ru.room.roomSeq" +
                     "  FROM RoomUser ru" +
-                    " WHERE ru.user.userSeq IN :userSeqs" +
-                    " GROUP BY ru.room" +
-                    " HAVING COUNT(ru.room) > 1"
+                    " WHERE EXISTS (" +
+                    "               SELECT ru_check.room.roomSeq" +
+                    "                 FROM RoomUser ru_check" +
+                    "                WHERE ru.room.roomSeq = ru_check.room.roomSeq" +
+                    "                GROUP BY ru_check.room" +
+                    "                HAVING COUNT(ru_check.room) = 2" +
+                    "       )" +
+                    "  AND ru.user.userSeq IN :userSeqs" +
+                    " GROUP BY ru.room " +
+                    "HAVING COUNT(*) = 2"
     )
     Long findByUserSeqIn(@Param("userSeqs") Long[] userSeqs);
 
