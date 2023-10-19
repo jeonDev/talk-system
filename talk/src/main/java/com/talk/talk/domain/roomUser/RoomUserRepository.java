@@ -43,7 +43,9 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
                     "                        WHERE subRu.user.userSeq = :userSeq" +
                     "                       )" +
                     "   AND ru.user.userSeq <> :userSeq" +
-                    " GROUP BY ru.room"
+                    " GROUP BY ru.room" +
+                    " ORDER BY MAX(ru.room.lastChattingTime) DESC nulls first" +
+                    "        , ru.room.roomSeq DESC "
     )
     List<RoomResList> findByRoomList(@Param("userSeq") Long userSeq);
 
