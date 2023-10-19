@@ -8,13 +8,13 @@ import SearchFriend from "@/components/room/SearchFriend.vue";
 import ChatRoom from "@/components/chat/ChatRoom.vue";
 
 const routes = [
+    { path: '/', name: 'Main', component: Main },
     { path: '/login', name: 'Login', component: Login },
+    { path: '/logout', name: 'Logout', component: Logout },
     { path: '/signup', name: 'Signup', component: Signup },
-    { path: '/main', name: 'Main', component: Main },
     { path: '/friend/search', name: 'SearchFriend', component: SearchFriend },
     { path: '/chatting/list', name: 'ChattingList', component: ChattingList },
     { path: '/chatting/room/:roomSeq', name: 'ChattingRoom', component: ChatRoom, props: true },
-    { path: '/logout', name: 'Logout', component: Logout },
 ];
 
 const router = createRouter({

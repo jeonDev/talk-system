@@ -5,7 +5,7 @@
         <b-nav-item>
           <router-link
               class="nav-router"
-              to="/main">
+              to="/">
             메인
           </router-link>
         </b-nav-item>

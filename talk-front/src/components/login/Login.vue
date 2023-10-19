@@ -55,7 +55,7 @@ export default {
         sessionStorage.setItem('name', name);
         sessionStorage.setItem('nickname', nickname);
         sessionStorage.setItem('Authorization', accessToken);
-        window.location.href = "/main";
+        window.location.href = "/";
       } else {
         modalSetting(res.status, res.message, () => {})
       }
