@@ -8,17 +8,17 @@
     >
       <div>
         <!-- 채팅 참가자 -->
-        <div>
+        <div class="text-primary fw-bold" style="font-size: 15px">
           {{item.roomTitle}}
         </div>
         <!-- 채팅 마지막 대화 -->
-        <div>
-
+        <div class="text-secondary">
+          {{item.lastChat}}
         </div>
       </div>
       <!-- 채팅 마지막 일시 -->
-      <div>
-
+      <div class="text-muted" style="font-size: 10px">
+        {{ item.lastChattingTime }}
       </div>
 
     </div>
