@@ -1,7 +1,7 @@
 <template>
   <div id="app">
+    <LoadingView/>
     <div class="talk-bg">
-      <LoadingView/>
       <div class="d-flex talk-app">
         <div class="talk-app-main">
           <!-- Login Before  -->

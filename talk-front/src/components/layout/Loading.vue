@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="loadingStore.isLoading ? 'card-img-overlay bg-opacity-50 bg-dark' : ''">
     <b-overlay
         spinner-variant="primary"
         spinner-type="grow"
