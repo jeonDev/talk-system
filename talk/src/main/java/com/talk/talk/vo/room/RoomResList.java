@@ -8,4 +8,6 @@ import lombok.*;
 public class RoomResList {
     private Long roomSeq;
     private String roomTitle;
+    private String lastChat;
+    private String lastChattingTime;
 }
