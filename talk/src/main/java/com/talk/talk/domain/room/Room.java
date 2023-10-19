@@ -1,12 +1,12 @@
 package com.talk.talk.domain.room;
 
+import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.domain.BaseTimeEntity;
 import com.talk.talk.domain.roomUser.RoomUser;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,7 +44,7 @@ public class Room extends BaseTimeEntity {
 
     public void updateLastChattingInfo(String lastChat) {
         this.lastChat = lastChat;
-        this.lastChattingTime = new Date().toString();
+        this.lastChattingTime = CommonUtils.getNowLocalDateTimeFormat("yyyy-MM-dd HH:mm:ss");
     }
 
 }
