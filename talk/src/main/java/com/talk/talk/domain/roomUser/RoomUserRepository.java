@@ -32,6 +32,8 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> 
             value = "SELECT new com.talk.talk.vo.room.RoomResList(" +
                     "       ru.room.roomSeq" +
                     "     , CAST(GROUP_CONCAT(ru.user.nickname) AS string )" +
+                    "     , MAX(ru.room.lastChat)" +
+                    "     , MAX(ru.room.lastChattingTime)" +
                     "       )" +
                     "  FROM RoomUser ru" +
                     "  JOIN ru.user u" +

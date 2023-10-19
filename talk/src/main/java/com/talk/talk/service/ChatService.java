@@ -4,6 +4,8 @@ import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
 import com.talk.talk.config.socket.vo.ChattingUserInfo;
 import com.talk.talk.config.socket.vo.Message;
+import com.talk.talk.domain.room.Room;
+import com.talk.talk.domain.room.RoomRepository;
 import com.talk.talk.domain.roomUser.RoomUser;
 import com.talk.talk.domain.roomUser.RoomUserRepository;
 import com.talk.talk.mongo.chatting.Chatting;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ChatService {
 
+    private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
     private final ChattingRepository chattingRepository;
 
@@ -49,6 +52,16 @@ public class ChatService {
                 .data(message.getData().toString())
                 .build();
 
-        return chattingRepository.save(chatting);
+        chatting = chattingRepository.save(chatting);
+
+        chattingLastInfoUpdate(chatting.getRoomSeq(), chatting.getData());
+
+        return chatting;
+    }
+
+    private void chattingLastInfoUpdate(Long roomSeq, String chatMessage) {
+        Room room = roomRepository.findById(roomSeq).get();
+        room.updateLastChattingInfo(chatMessage);
+        roomRepository.save(room);
     }
 }
