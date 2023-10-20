@@ -38,3 +38,14 @@ export async function requestFriend(request) {
             return err.response.data;
         })
 }
+
+export async function removeFriend(request) {
+    return await client
+        .post('/user/friend/remove', request)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((err) => {
+            return err.response.data;
+        })
+}

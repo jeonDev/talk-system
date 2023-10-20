@@ -66,4 +66,17 @@ public class FriendController {
                 .build();
     }
 
+    /**
+     * 친구 삭제
+     * */
+    @PostMapping("/user/friend/remove")
+    public ApiResponse<Void> userFriendRemove(@RequestBody @Valid FriendRequestReqDto request) {
+
+        request.setMyUserSeq(CommonUtils.getUserInfo().getUserSeq());
+        FriendRequestResDto result = friendService.requestFriend(request);
+        friendService.deleteUserFriend(request);
+        return ApiResponse.<Void>builder()
+                .build();
+    }
+
 }

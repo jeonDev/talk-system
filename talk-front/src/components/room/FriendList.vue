@@ -13,7 +13,13 @@
             variant="outline-dark"
             @click="createRoom(item.userSeq)"
         >
-          대화하기
+          대화
+        </b-button>
+        <b-button
+            variant="outline-dark"
+            @click="friendRemove(item.userSeq)"
+        >
+          제거
         </b-button>
       </div>
     </div>
@@ -22,6 +28,7 @@
 
 <script>
 import {createPrivateRoom} from "@/request/room";
+import {removeFriend} from "@/request/friend";
 
 export default {
   name: 'FriendListView',
@@ -36,6 +43,13 @@ export default {
     },
     async attendChattingRoom(roomSeq) {
       this.$router.push({name: "ChattingRoom", params: {roomSeq: roomSeq}});
+    },
+    async friendRemove(userSeq) {
+      const result = await removeFriend({userSeq: userSeq});
+
+      if(result.status === 'SUCCESS') {
+        this.$emit('deleteFriendEvent', userSeq)
+      }
     }
   }
 }

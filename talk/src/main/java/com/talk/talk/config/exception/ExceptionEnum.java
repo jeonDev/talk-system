@@ -17,6 +17,9 @@ public enum ExceptionEnum {
     // Room Exception
     OVER_INVITE_SIZE("R1", "채팅방 최대 인원을 초과하였습니다"),
 
+    // Friend Exception
+    NOT_EXISTS_FRIEND("F1", "존재하지 않는 친구입니다."),
+
     // Database
     DATA_DUPLICATE("500", "이미 등록된 데이터 입니다."),
 

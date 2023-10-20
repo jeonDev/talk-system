@@ -21,6 +21,7 @@
     <div>
       <FriendListView
           :friend-list="friendList"
+          @deleteFriendEvent="(userSeq) => this.friendList = this.friendList.filter(item => item.userSeq !== userSeq)"
       />
     </div>
 

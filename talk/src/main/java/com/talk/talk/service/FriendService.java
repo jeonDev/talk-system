@@ -78,4 +78,26 @@ public class FriendService {
                 .nickname(friend.getFriendUser().getNickname())
                 .build();
     }
+
+    /**
+     * 친구 삭제
+     * */
+    public void deleteUserFriend(FriendRequestReqDto request) {
+        // 1. 내 정보 조회
+        User user = userRepository.findById(request.getMyUserSeq()).orElseThrow(() -> {
+            throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
+        });
+
+        // 2. 친구 정보 조회
+        User friendUser = userRepository.findById(request.getUserSeq()).orElseThrow(() -> {
+            throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_USER.getCode());
+        });
+
+        // 3. 신청 정보 조회
+        Friend friend = friendRepository.findByUserAndFriendUser(user, friendUser).orElseThrow(() -> {
+            throw new IllegalArgumentException(ExceptionEnum.NOT_EXISTS_FRIEND.getCode());
+        });
+
+        friendRepository.delete(friend);
+    }
 }
