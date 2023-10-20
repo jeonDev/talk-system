@@ -30,8 +30,14 @@ public class CommonUtils {
         return LocalDateTime.now();
     }
 
+    /** 현재 시간 포맷 지정 */
     public static String getNowLocalDateTimeFormat(String format) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         return getNowLocalDateTime().format(formatter);
+    }
+
+    /** 문자열 공백 체크 */
+    public static boolean isStrNullOrEmpty(String str) {
+        return str == null || "".equals(str) ? true : false;
     }
 }

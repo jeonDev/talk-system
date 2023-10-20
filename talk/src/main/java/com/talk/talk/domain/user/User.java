@@ -1,7 +1,10 @@
 package com.talk.talk.domain.user;
 
+import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.domain.BaseTimeEntity;
 import com.talk.talk.domain.roomUser.RoomUser;
+import com.talk.talk.domain.userHistory.UserHistory;
+import com.talk.talk.vo.login.userInfo.UserInfoReqDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,4 +43,30 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<RoomUser> roomUsers = new ArrayList<>();
+
+    /**
+     * 정보변경
+     * */
+    public void updateUserInfo(UserInfoReqDto request) {
+        if(!CommonUtils.isStrNullOrEmpty(request.getPassword())) this.password = request.getPassword();
+        if(!CommonUtils.isStrNullOrEmpty(request.getName())) this.name = request.getName();
+        if(!CommonUtils.isStrNullOrEmpty(request.getNickname())) this.nickname = request.getNickname();
+        if(!CommonUtils.isStrNullOrEmpty(request.getPhone())) this.phone = request.getPhone();
+        if(!CommonUtils.isStrNullOrEmpty(request.getEmail())) this.email = request.getEmail();
+    }
+
+    /**
+     * 사용자 정보 내역 저장
+     * */
+    public UserHistory saveHistoryInfo() {
+        return UserHistory.builder()
+                .user(this)
+                .id(this.id)
+                .password(this.password)
+                .name(this.name)
+                .nickname(this.nickname)
+                .phone(this.phone)
+                .email(this.email)
+                .build();
+    }
 }

@@ -3,7 +3,18 @@
     <!--  내 프로필  -->
     <div class="d-flex justify-content-between p-2 align-items-center bg-warning-subtle pt-4 pb-4">
       <div>
-        <div class="fw-bold">{{loginInfo('nickname')}}</div>
+        <div class="fw-bold">
+          <span>{{loginInfo('nickname')}}</span>
+          <router-link
+              class="m-1"
+              to="/user/change"
+          >
+            <img
+                src="../../assets/etc/setting.png"
+                style="width: 25px; height: 25px"
+            >
+          </router-link>
+        </div>
         <div class="text-secondary" style="font-size: 12px"> ({{loginInfo('name')}}) </div>
       </div>
       <!--  친구 찾기  -->

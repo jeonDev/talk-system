@@ -10,15 +10,14 @@ import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;
 import com.talk.talk.vo.login.signUp.SignUpReqDto;
 import com.talk.talk.vo.login.signUp.SignUpResDto;
+import com.talk.talk.vo.login.userInfo.UserInfoReqDto;
+import com.talk.talk.vo.login.userInfo.UserInfoResDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -73,5 +72,29 @@ public class LoginController {
         cookie.setPath("/");
         response.addCookie(cookie);
         return ApiResponse.<Void>builder().build();
+    }
+    /**
+     * update User Info
+     * */
+    @PostMapping("/user/info/update")
+    public ApiResponse<UserInfoResDto> userInfoUpdate(@RequestBody UserInfoReqDto request) {
+
+        UserInfoResDto result = userService.updateUserInfo(request);
+
+        return ApiResponse.<UserInfoResDto>builder()
+                .data(result)
+                .build();
+    }
+
+    /**
+     * User Info Get
+     * */
+    @GetMapping("/user/getUserInfo")
+    public ApiResponse<UserInfoResDto> getUserInfo() {
+        UserInfoResDto result = userService.selectUserInfo();
+
+        return ApiResponse.<UserInfoResDto>builder()
+                .data(result)
+                .build();
     }
 }

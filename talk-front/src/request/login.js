@@ -47,3 +47,27 @@ export async function logout() {
             return err.response;
         })
 }
+
+/** 사용자 정보 조회 */
+export async function selectUserInfo() {
+    return await client
+        .get("/user/getUserInfo")
+        .then((res) => {
+            return res.data;
+        })
+        .catch((err) => {
+            return err.response;
+        })
+}
+
+/** 사용자 정보 조회 */
+export async function updateUserInfo(request) {
+    return await client
+        .post("/user/info/update", request)
+        .then((res) => {
+            return res.data;
+        })
+        .catch((err) => {
+            return err.response.data;
+        })
+}
