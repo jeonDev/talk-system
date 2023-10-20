@@ -68,8 +68,10 @@ export default {
       }
     },
     sendMsg() {
-      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'roomSeq': this.roomSeq, 'message': this.message}));
-      this.message = ''
+      if(this.message) {
+        this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'roomSeq': this.roomSeq, 'message': this.message}));
+        this.message = ''
+      }
     },
     scroll_bottom() {
       const chatSpace = window.document.getElementById('chat-space');

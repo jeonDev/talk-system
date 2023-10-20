@@ -14,7 +14,6 @@ const socketStore = {
                     if(state.roomSeq && jsonData.roomSeq == state.roomSeq) {
                         state.chattingList.push(jsonData);
                     }
-                    console.log(state.chattingList)
                 }
             }
         },
