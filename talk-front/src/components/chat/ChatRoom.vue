@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="bg-white overflow-scroll scroll" style="height: 300px">
+    <div
+        id="chat-space"
+        class="bg-white overflow-scroll scroll"
+        style="height: 300px">
       <div
           v-for="(item, idx) in chattingList"
           :key="idx"
@@ -15,9 +18,7 @@
                 <span v-if="item.messageType == 'MESSAGE'">
               {{item.data}}
             </span>
-
           </div>
-
         </div>
       </div>
     </div>
@@ -69,7 +70,14 @@ export default {
     sendMsg() {
       this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'roomSeq': this.roomSeq, 'message': this.message}));
       this.message = ''
+    },
+    scroll_bottom() {
+      const chatSpace = window.document.getElementById('chat-space');
+      chatSpace.scrollTop = chatSpace.scrollHeight;
     }
+  },
+  updated() {
+    this.scroll_bottom();
   },
   created() {
     this.$store.commit('SET_ROOM_ENTRANCE', this.roomSeq);
