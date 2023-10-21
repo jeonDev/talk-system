@@ -34,7 +34,6 @@ public class ChatHandler extends TextWebSocketHandler {
                 .build();
 
         sessions.add(sessionInfo);
-        super.afterConnectionEstablished(session);
     }
 
     @Override
@@ -51,7 +50,6 @@ public class ChatHandler extends TextWebSocketHandler {
         if(MessageType.MESSAGE == messageInfo.getMessageType()) {
             socketService.sendMessage(sessions, session, messageInfo, sendMsg);
         }
-        super.handleTextMessage(session, message);
     }
 
     @Override
@@ -61,6 +59,5 @@ public class ChatHandler extends TextWebSocketHandler {
                 .filter(item -> session.equals(item.getWebSocketSession()))
                 .findFirst()
                 .ifPresent(item -> sessions.remove(item));
-        super.afterConnectionClosed(session, status);
     }
 }
