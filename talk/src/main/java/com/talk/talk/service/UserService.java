@@ -136,10 +136,9 @@ public class UserService {
 
         // 2. 패스워드 정보 입력 X => 기존 패스워드 체크
         if(!CommonUtils.isStrNullOrEmpty(request.getPassword())) {
-            if(user.getPassword().equals(request.getOldPassword())) request.setPassword(passwordEncoder.encode(request.getPassword()));
+            if(passwordEncoder.matches(request.getOldPassword(), user.getPassword()) )request.setPassword(passwordEncoder.encode(request.getPassword()));
             else throw new IllegalArgumentException(ExceptionEnum.NOT_MATCHED_PASSWORD.getCode());
         }
-
 
         // 3. 정보변경 & 저장
         user.updateUserInfo(request);

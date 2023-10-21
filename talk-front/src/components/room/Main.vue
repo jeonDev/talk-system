@@ -10,7 +10,7 @@
               to="/user/change"
           >
             <img
-                src="../../assets/etc/setting.png"
+                src="../../assets/images/setting.png"
                 style="width: 25px; height: 25px"
             >
           </router-link>
