@@ -91,9 +91,18 @@ public class SocketService {
         UserInfo userInfo = getSessionUserInfo(sessions, session);
         JSONObject jsonObject = new JSONObject(payload);
 
-        Object msg = jsonObject.getString("message");
-        String messageType = jsonObject.getString("type");
+        Object msg = null;
+        String type = jsonObject.getString("type");
+        MessageType messageType = getMessageType(type);
+
         Long roomSeq = Long.parseLong(jsonObject.getString("roomSeq"));
+
+        if(MessageType.MESSAGE == messageType) {
+            msg = jsonObject.getString("message");
+        } else if (MessageType.IMAGE == messageType) {
+            msg = jsonObject.getJSONObject("message");
+        }
+
 
         return Message.builder()
                 .roomSeq(roomSeq)
@@ -103,7 +112,7 @@ public class SocketService {
                         .name(userInfo.getName())
                         .nickname(userInfo.getNickname())
                         .build())
-                .messageType(getMessageType(messageType))
+                .messageType(messageType)
                 .build();
     }
 
@@ -119,6 +128,7 @@ public class SocketService {
     private MessageType getMessageType(String messageType) {
         switch (messageType) {
             case "MESSAGE" : return MessageType.MESSAGE;
+            case "IMAGE" : return MessageType.IMAGE;
             default: return MessageType.MESSAGE;
         }
     }

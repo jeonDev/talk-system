@@ -25,6 +25,16 @@
     <div class="fixed-bottom m-auto p-2" style="width: 500px; height: 100px">
       <hr/>
       <div class="d-flex p-2">
+        <span>
+          <input type="file" ref="images" class="d-none" id="upload-image" @change="uploadImage">
+          <label for="upload-image">
+            <img
+                src="../../assets/images/image.png"
+                class="m-1"
+                style="width: 25px; height: 25px; cursor: pointer"
+            >
+          </label>
+        </span>
         <b-form-input
             v-model="message"
             @keyup.enter="sendMsg"
@@ -48,7 +58,8 @@ export default {
   props: [ 'roomSeq' ],
   data() {
     return {
-      message : ''
+      message : '',
+      image: null
     }
   },
   computed: {
@@ -72,6 +83,25 @@ export default {
         this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'MESSAGE', 'roomSeq': this.roomSeq, 'message': this.message}));
         this.message = ''
       }
+    },
+    sendImage(object) {
+      console.log(object);
+      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify(object));
+      this.image = null;
+    },
+    uploadImage() {
+      const file = this.$refs.images.files?.[0];
+      const vueInstance = this;
+      const reader = new FileReader();
+      reader.onloadend = function () {
+
+        const base64Data = reader.result
+        console.log(reader)
+        console.log(base64Data)
+        const obj = {'type': 'IMAGE', 'roomSeq': vueInstance.roomSeq, 'message': base64Data};
+        vueInstance.sendImage(obj);
+      }
+      reader.readAsDataURL(file)
     },
     scroll_bottom() {
       const chatSpace = window.document.getElementById('chat-space');
