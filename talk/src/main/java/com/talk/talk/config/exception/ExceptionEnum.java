@@ -23,6 +23,9 @@ public enum ExceptionEnum {
     // Database
     DATA_DUPLICATE("500", "이미 등록된 데이터 입니다."),
 
+    // Common
+    COMMON_FILE_NOT_EXISTS("CF1", "파일이 존재하지 않습니다"),
+
     // Etc
     INVALID_ACCESS("98", "비정상적인 접근입니다."),
     SYSTEM_ERROR("99", "System Error.");

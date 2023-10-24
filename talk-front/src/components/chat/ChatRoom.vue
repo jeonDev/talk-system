@@ -53,6 +53,7 @@
 
 <script>
 import {selectRoomChattingList} from "@/request/chatting";
+import fileUpload from "@/request/common";
 export default {
   name: 'ChatRoomView',
   props: [ 'roomSeq' ],
@@ -84,24 +85,20 @@ export default {
         this.message = ''
       }
     },
-    sendImage(object) {
-      console.log(object);
-      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify(object));
+    sendImage(fileInfo) {
+      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'IMAGE', 'roomSeq': this.roomSeq, 'message': fileInfo}));
       this.image = null;
     },
-    uploadImage() {
-      const file = this.$refs.images.files?.[0];
-      const vueInstance = this;
-      const reader = new FileReader();
-      reader.onloadend = function () {
+    async uploadImage() {
 
-        const base64Data = reader.result
-        console.log(reader)
-        console.log(base64Data)
-        const obj = {'type': 'IMAGE', 'roomSeq': vueInstance.roomSeq, 'message': base64Data};
-        vueInstance.sendImage(obj);
+      const formData = new FormData();
+      const file = this.$refs.images.files?.[0];
+      formData.append("file", file);
+      const result = await fileUpload(formData);
+      if(result.status == 'SUCCESS') {
+        this.sendImage(result.data.fileSeq);
       }
-      reader.readAsDataURL(file)
+
     },
     scroll_bottom() {
       const chatSpace = window.document.getElementById('chat-space');

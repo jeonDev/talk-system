@@ -33,3 +33,7 @@ jwt:
 
 cors:
   url: http://localhost:8080
+
+file:
+  upload-path: /Users/jjh/project/talk-system/file/
+  access-path: /file/
