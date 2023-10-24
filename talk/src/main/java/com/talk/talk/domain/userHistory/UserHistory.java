@@ -1,5 +1,6 @@
 package com.talk.talk.domain.userHistory;
 
+import com.talk.talk.domain.BaseTimeEntity;
 import com.talk.talk.domain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "USER_HISTORY")
-public class UserHistory {
+public class UserHistory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
