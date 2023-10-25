@@ -36,4 +36,4 @@ cors:
 
 file:
   upload-path: /Users/jjh/project/talk-system/file/
-  access-path: /file/
+  access-path: /file/**

@@ -1,6 +1,5 @@
 package com.talk.talk.service;
 
-import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.utils.FileUtils;
 import com.talk.talk.config.vo.FileInfo;
 import com.talk.talk.domain.commonFile.CommonFile;
@@ -10,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -22,19 +23,9 @@ public class CommonService {
     /**
      * File Upload
      * */
-    public FileUploadResDto fileUpload(MultipartFile file) {
-
+    public FileUploadResDto fileUpload(MultipartFile file) throws IOException {
         FileInfo fileInfo = fileManageUtils.upload(file);
-
-        CommonFile commonFile = CommonFile.builder()
-                .fileName(fileInfo.getFileName())
-                .filePath(fileInfo.getFilePath())
-                .fileExt(fileInfo.getFileExt())
-                .createUserSeq(CommonUtils.getUserInfo().getUserSeq())
-                .build();
-
-        commonFileRepository.saveAndFlush(commonFile);
-
+        CommonFile commonFile = commonFileRepository.saveAndFlush(fileInfo.dtoToEntity());
         return commonFile.entityToDto();
     }
 }

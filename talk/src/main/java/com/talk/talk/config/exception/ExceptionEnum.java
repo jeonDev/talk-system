@@ -25,6 +25,7 @@ public enum ExceptionEnum {
 
     // Common
     COMMON_FILE_NOT_EXISTS("CF1", "파일이 존재하지 않습니다"),
+    COMMON_FILE_NOT_AllOWED_EXTENSION("CF2", "허용되지 않은 확장자입니다."),
 
     // Etc
     INVALID_ACCESS("98", "비정상적인 접근입니다."),

@@ -28,16 +28,28 @@ public class CommonFile extends BaseTimeEntity {
     private String fileName;
 
     /**
-     * 파일경로
-     */
-    @Column(name = "FILE_PATH")
-    private String filePath;
+     * 원본 파일명
+     * */
+    @Column(name = "ORIGIN_FILE_NAME")
+    private String originFileName;
+
+    /**
+     * 확장자 타입
+     * */
+    @Column(name = "CONTENT_TYPE")
+    private String contentType;
 
     /**
      * 파일 확장자
      */
     @Column(name = "FILE_EXT")
     private String fileExt;
+
+    /**
+     * 파일경로
+     */
+    @Column(name = "FILE_PATH")
+    private String filePath;
 
     /**
      * 등록자
