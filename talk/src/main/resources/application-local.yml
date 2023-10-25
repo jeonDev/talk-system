@@ -22,6 +22,9 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
 
 logging:
   level:
