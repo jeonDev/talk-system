@@ -8,6 +8,6 @@ import lombok.Getter;
 public class FileUploadResDto {
     private Long fileSeq;
     private String fileName;
-    private String filePath;
+//    private String filePath;
     private String fileExt;
 }

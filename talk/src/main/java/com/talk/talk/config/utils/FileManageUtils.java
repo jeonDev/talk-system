@@ -29,7 +29,7 @@ public class FileManageUtils implements FileUtils {
         String contentType = file.getContentType();
         String fileExt = originFileName.substring(originFileName.lastIndexOf(".") + 1);
         String uuid = UUID.randomUUID().toString();
-        String fileName = uploadPath + uuid + "." + fileExt;
+        String fileName = uuid + "." + fileExt;
 
         log.debug("originFileName : {} contentType : {} fileExt : {} uuid : {} fileName : {}", originFileName, contentType, fileExt, uuid, fileName);
 
@@ -37,7 +37,7 @@ public class FileManageUtils implements FileUtils {
         if(!contentType.startsWith("image")) throw new ApiException(ExceptionEnum.COMMON_FILE_NOT_AllOWED_EXTENSION);
 
         // 3. File 저장
-        File saveFile = new File(fileName);
+        File saveFile = new File(uploadPath + fileName);
         if(!saveFile.exists()) saveFile.mkdirs();
         file.transferTo(saveFile);
 

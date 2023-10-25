@@ -61,7 +61,7 @@ public class CommonFile extends BaseTimeEntity {
         return FileUploadResDto.builder()
                 .fileSeq(this.fileSeq)
                 .fileName(this.fileName)
-                .filePath(this.filePath)
+//                .filePath(this.filePath)
                 .fileExt(this.fileExt)
                 .build();
     }
