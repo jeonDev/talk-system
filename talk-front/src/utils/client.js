@@ -12,7 +12,7 @@ const unAuthorizationResponseObject = {
 }
 
 const instance = axios.create({
-    baseURL : 'http://localhost:8000'
+    baseURL : process.env.VUE_APP_API_URL
 });
 
 instance.interceptors.request.use(

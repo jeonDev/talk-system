@@ -6,7 +6,7 @@ const socketStore = {
     },
     mutations: {
         SOCKET_CONNECT(state) {
-            state.socket = new WebSocket("ws://localhost:8000/ws");
+            state.socket = new WebSocket(process.env.VUE_APP_WS_URL);
             state.socket.onopen = () => {
                 console.log("연결완료");
                 state.socket.onmessage = ({data}) => {
