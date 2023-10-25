@@ -28,4 +28,11 @@ public class CommonService {
         CommonFile commonFile = commonFileRepository.saveAndFlush(fileInfo.dtoToEntity());
         return commonFile.entityToDto();
     }
+
+    /**
+     * File Seq Select
+     */
+    public CommonFile selectCommonFile(Long fileSeq) {
+        return commonFileRepository.findById(fileSeq).orElse(null);
+    }
 }

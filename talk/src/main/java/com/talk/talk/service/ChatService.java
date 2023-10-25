@@ -4,6 +4,7 @@ import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
 import com.talk.talk.config.socket.vo.ChattingUserInfo;
 import com.talk.talk.config.socket.vo.Message;
+import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.domain.room.Room;
 import com.talk.talk.domain.room.RoomRepository;
 import com.talk.talk.domain.roomUser.RoomUser;
@@ -54,7 +55,9 @@ public class ChatService {
 
         chatting = chattingRepository.save(chatting);
 
-        chattingLastInfoUpdate(chatting.getRoomSeq(), chatting.getData());
+        String lastChat = MessageType.IMAGE == message.getMessageType() ? "Image" : chatting.getData();
+
+        chattingLastInfoUpdate(chatting.getRoomSeq(), lastChat);
 
         return chatting;
     }

@@ -12,4 +12,8 @@ public class Message<T> {
     private T data;
     private Long roomSeq;
     private ChattingUserInfo userInfo;
+
+    public void imageDataToMessageData(Object data) {
+        this.data = (T) data;
+    }
 }

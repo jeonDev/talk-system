@@ -38,17 +38,19 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        // 0. Message Builder
+        // 1. Message Builder
         Message<Object> messageInfo = socketService.messageToJsonSendMessage(sessions, session, message.getPayload());
 
-        // 1. Send Message Set
-        ObjectMapper mapper = new ObjectMapper();
-        String sendMsg = mapper.writeValueAsString(messageInfo);
-
         // 2. Send
-        // Type : Message
         if(MessageType.MESSAGE == messageInfo.getMessageType()) {
+            // 2-1. Send Message Set
+            ObjectMapper mapper = new ObjectMapper();
+            String sendMsg = mapper.writeValueAsString(messageInfo);
+            // 2-2. Message Send
             socketService.sendMessage(sessions, session, messageInfo, sendMsg);
+        } else if (MessageType.IMAGE == messageInfo.getMessageType()) {
+            // 2-1. Image Message Send
+            socketService.sendImage(sessions, session, messageInfo);
         }
     }
 

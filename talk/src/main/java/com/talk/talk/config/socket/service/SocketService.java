@@ -1,15 +1,18 @@
 package com.talk.talk.config.socket.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.config.jwt.vo.UserInfo;
 import com.talk.talk.config.socket.vo.ChattingUserInfo;
 import com.talk.talk.config.socket.vo.Message;
 import com.talk.talk.config.socket.vo.MessageType;
 import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
+import com.talk.talk.domain.commonFile.CommonFile;
 import com.talk.talk.domain.user.User;
 import com.talk.talk.mongo.chatting.Chatting;
 import com.talk.talk.service.ChatService;
+import com.talk.talk.service.CommonService;
 import com.talk.talk.service.RoomService;
 import com.talk.talk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ public class SocketService {
     private final ChatService chatService;
     private final RoomService roomService;
     private final UserService userService;
+    private final CommonService commonService;
     private final GenerateJwt generateJwt;
 
     /** Chatting Send Message */
@@ -59,6 +63,21 @@ public class SocketService {
                         throw new RuntimeException(e);
                     }
                 });
+    }
+
+    /**
+     * Chatting Send Image
+     */
+    public void sendImage(List<WebSocketSessionInfo> sessions,
+                          WebSocketSession session,
+                          Message<?> messageInfo) throws JsonProcessingException {
+        Long fileSeq = (Long) messageInfo.getData();
+        CommonFile commonFile = commonService.selectCommonFile(fileSeq);
+        messageInfo.imageDataToMessageData(commonFile.getFileName());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String sendMsg = mapper.writeValueAsString(messageInfo);
+        this.sendMessage(sessions,session,messageInfo,sendMsg);
     }
 
     /**
@@ -100,9 +119,8 @@ public class SocketService {
         if(MessageType.MESSAGE == messageType) {
             msg = jsonObject.getString("message");
         } else if (MessageType.IMAGE == messageType) {
-            msg = jsonObject.getJSONObject("message");
+            msg = jsonObject.getLong("message");
         }
-
 
         return Message.builder()
                 .roomSeq(roomSeq)
@@ -132,4 +150,5 @@ public class SocketService {
             default: return MessageType.MESSAGE;
         }
     }
+
 }

@@ -15,8 +15,14 @@
             <span class="profile-msg-box">{{item.userInfo.nickname}}</span>
           </div>
           <div class="p-2 m-2 w-75 msg-box">
-                <span v-if="item.messageType == 'MESSAGE'">
+            <span v-if="item.messageType == 'MESSAGE'">
               {{item.data}}
+            </span>
+            <span v-else-if="item.messageType == 'IMAGE'">
+              <img
+                  class="w-100"
+                  :src="imageUrl + item.data"
+              />
             </span>
           </div>
         </div>
@@ -69,6 +75,9 @@ export default {
     },
     getUserInfo: function () {
       return sessionStorage.getItem("userSeq");
+    },
+    imageUrl: function () {
+      return process.env.VUE_APP_IMAGE_URL;
     }
   },
   methods: {
@@ -85,8 +94,8 @@ export default {
         this.message = ''
       }
     },
-    sendImage(fileInfo) {
-      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'IMAGE', 'roomSeq': this.roomSeq, 'message': fileInfo}));
+    sendImage(fileSeq) {
+      this.$store.commit('SOCKET_SEND_MESSAGE', JSON.stringify({'type': 'IMAGE', 'roomSeq': this.roomSeq, 'message': fileSeq}));
       this.image = null;
     },
     async uploadImage() {
