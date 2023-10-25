@@ -35,5 +35,5 @@ cors:
   url: http://localhost:8080
 
 file:
-  upload-path: /Users/jjh/project/talk-system/file/
+  upload-path: /Users/jjh/project/file/talk-system/
   access-path: /file/**
