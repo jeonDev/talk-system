@@ -4,7 +4,7 @@ import com.talk.talk.config.exception.ApiException;
 import com.talk.talk.config.exception.ExceptionEnum;
 import com.talk.talk.config.utils.StringUtils;
 import com.talk.talk.config.vo.ApiResponse;
-import com.talk.talk.config.vo.TokenInfo;
+import com.talk.talk.config.jwt.vo.TokenInfo;
 import com.talk.talk.service.UserService;
 import com.talk.talk.vo.login.login.LoginReqDto;
 import com.talk.talk.vo.login.login.UserDto;

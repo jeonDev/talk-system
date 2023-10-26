@@ -1,6 +1,6 @@
 package com.talk.talk.vo.login.login;
 
-import com.talk.talk.config.vo.TokenInfo;
+import com.talk.talk.config.jwt.vo.TokenInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

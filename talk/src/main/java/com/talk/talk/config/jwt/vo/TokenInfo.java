@@ -1,4 +1,4 @@
-package com.talk.talk.config.vo;
+package com.talk.talk.config.jwt.vo;
 
 import lombok.Builder;
 import lombok.Getter;
