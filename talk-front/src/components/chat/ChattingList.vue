@@ -29,7 +29,7 @@
     >
       <div
           class="d-flex justify-content-end m-2"
-          style="height: 220px"
+          style="height: 300px"
           v-if="isSearchUserView"
       >
         <SearchChattingUserView
@@ -45,8 +45,6 @@
           +
         </div>
       </div>
-
-
     </div>
   </div>
 </template>

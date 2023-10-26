@@ -1,34 +1,33 @@
 <template>
   <div class="border border-secondary p-2 h-100" style="border-radius: 10px">
 
-    <!-- 초대할 멤버 -->
-    <div class="d-flex justify-content-start mw-100 overflow-x-auto">
-      <div v-for="(item, idx) in roomUserList"
-           :key="idx"
-           class="border border-black p-1 m-1"
-           style="border-radius: 10px; width: 73px"
-      >
-        <span
-            class="text-line"
-            style="font-size: 12px; width: 60px"
-        >
-          {{item.name}}
-        </span>
-        <span
-            class="p-1"
-            style="font-size: 8px; cursor: pointer"
-            @click="deleteChatUser(item)"
-        >
-           X
-        </span>
-      </div>
-    </div>
     <!-- Search -->
-    <div style="height: 50px">
-      <div class="d-flex justify-content-between p-2 align-self-center">
+    <div style="height: 250px">
+      <!-- 초대할 멤버 -->
+      <div class="d-flex justify-content-start mw-100 overflow-x-auto">
+        <div v-for="(item, idx) in roomUserList"
+             :key="idx"
+             class="border border-black p-1 m-1"
+             style="border-radius: 10px; width: 73px; max-height: 30px"
+        >
+          <span
+              class="text-line"
+              style="font-size: 12px; width: 30px"
+          >
+            {{item.name}}
+          </span>
+          <span
+              class="p-1"
+              style="width:5px; font-size: 8px; cursor: pointer"
+              @click="deleteChatUser(item)"
+          >
+           X
+          </span>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between p-2 align-self-center" style="height: 50px">
         <div class="w-75 m-auto">
           <b-form-input
-
               placeholder="name or nickname"
           />
         </div>
@@ -42,21 +41,22 @@
           </b-button>
         </div>
       </div>
-    </div>
-    <hr/>
-    <!-- Select -->
-    <div class="overflow-y-scroll" style="height: 120px;">
-      <div v-for="(item, idx) in friendList"
-           :key="idx"
-           style="cursor: pointer"
-           @click="addChatUser(item)"
-      >
-        <div>
-          {{item.name}}
-        </div>
+      <hr/>
+      <!-- Select -->
+      <div class="overflow-y-scroll" style="height: 150px;">
+        <div v-for="(item, idx) in friendList"
+             :key="idx"
+             style="cursor: pointer"
+             @click="addChatUser(item)"
+        >
+          <div>
+            {{item.name}}
+          </div>
 
+        </div>
       </div>
     </div>
+
     <div class="d-flex justify-content-between">
       <b-button
           variant="outline-success"
