@@ -19,6 +19,9 @@ public class FileManageUtils implements FileUtils {
     @Value("${file.upload-path}")
     private String uploadPath;
 
+    /**
+     * File Upload
+     */
     @Override
     public FileInfo upload(MultipartFile file) throws IOException {
 
@@ -50,8 +53,16 @@ public class FileManageUtils implements FileUtils {
                 .build();
     }
 
+    /**
+     * File Delete
+     */
     @Override
-    public void remove() {
+    public boolean remove(String fileName) throws IOException{
+        boolean isDelete = false;
 
+        File file = new File(uploadPath + fileName);
+        if(file.exists()) isDelete = file.delete();
+
+        return isDelete;
     }
 }

@@ -10,5 +10,5 @@ public interface FileUtils {
     FileInfo upload(MultipartFile file) throws IOException;
 
     /** File Remove */
-    void remove();
+    boolean remove(String fileName) throws IOException;
 }
