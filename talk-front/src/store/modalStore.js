@@ -7,9 +7,6 @@ const modalStore = {
 
         }
     },
-    getters: {
-
-    },
     mutations: {
         showModal(state, modalInfo) {
             state.code = modalInfo.code;

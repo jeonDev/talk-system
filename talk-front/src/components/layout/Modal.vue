@@ -17,8 +17,6 @@ export default {
     modalStore() {
       return this.$store.state.modalStore;
     }
-  },
-  created() {
   }
 }
 </script>
