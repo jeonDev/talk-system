@@ -14,4 +14,8 @@ public class TalkSecurityContextHolder {
     public static ContextHolder getContext() {
         return contextHolder.getContextHolder();
     }
+
+    public static void clear() {
+        contextHolder.clear();
+    }
 }

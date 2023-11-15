@@ -6,4 +6,6 @@ public interface RequestContextHolder {
 
     void setContextHolder(ContextHolder contextHolder);
 
+    void clear();
+
 }

@@ -18,4 +18,9 @@ public class TalkRequestContextHolder implements RequestContextHolder {
     public void setContextHolder(ContextHolder context) {
         contextHolder.set(context);
     }
+
+    @Override
+    public void clear() {
+        contextHolder.remove();
+    }
 }
