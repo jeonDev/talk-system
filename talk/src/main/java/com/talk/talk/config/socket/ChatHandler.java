@@ -23,10 +23,11 @@ public class ChatHandler extends TextWebSocketHandler {
 
     private final static List<WebSocketSessionInfo> sessions = new ArrayList<>();
     private final SocketService socketService;
+    private final ObjectMapper objectMapper;
 
     /** Socket 접속 */
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession session) {
         UserInfo userInfo = socketService.getUserSeqToWebSocketSession(session);
         WebSocketSessionInfo sessionInfo = WebSocketSessionInfo.builder()
                 .userInfo(userInfo)
@@ -44,8 +45,7 @@ public class ChatHandler extends TextWebSocketHandler {
         // 2. Send
         if(MessageType.MESSAGE == messageInfo.getMessageType()) {
             // 2-1. Send Message Set
-            ObjectMapper mapper = new ObjectMapper();
-            String sendMsg = mapper.writeValueAsString(messageInfo);
+            String sendMsg = objectMapper.writeValueAsString(messageInfo);
             // 2-2. Message Send
             socketService.sendMessage(sessions, session, messageInfo, sendMsg);
         } else if (MessageType.IMAGE == messageInfo.getMessageType()) {
