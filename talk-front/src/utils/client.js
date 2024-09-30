@@ -22,7 +22,7 @@ instance.interceptors.request.use(
         if( token != null && token !== '')
             config.headers.Authorization = 'Bearer ' + token;
 
-        store.commit('showLoading');
+        // store.commit('showLoading');
 
         return config;
     },
@@ -33,11 +33,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     function (response) {
-        store.commit('hideLoading');
+        // store.commit('hideLoading');
         return response;
     },
     async function (error) {
-        store.commit('hideLoading');
+        // store.commit('hideLoading');
         const originRequest = error.config;
 
         if(error.response.status === 401 && !originRequest._retry) {
@@ -53,10 +53,7 @@ instance.interceptors.response.use(
                 const token = res.data.token;
                 sessionStorage.setItem('Authorization', token);
                 originRequest._retry = true;
-
-                originRequest.headers = {
-                    ...originRequest.headers
-                }
+                originRequest.headers['Authorization'] = 'Bearer ' + accessToken;
 
                 return instance(originRequest);
             } else {
