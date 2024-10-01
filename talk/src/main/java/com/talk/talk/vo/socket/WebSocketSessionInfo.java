@@ -1,4 +1,4 @@
-package com.talk.talk.config.socket.vo;
+package com.talk.talk.vo.socket;
 
 import com.talk.talk.config.jwt.vo.UserInfo;
 import lombok.*;

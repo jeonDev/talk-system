@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = "com.talk.talk.domain")
-@EnableMongoRepositories(basePackages = "com.talk.talk.mongo")
+@EnableMongoRepositories(basePackages = "com.talk.talk.domain.mongo")
 public class TalkApplication {
 
 	public static void main(String[] args) {

@@ -2,7 +2,6 @@ package com.talk.talk.config.filter;
 
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.config.jwt.security.*;
-import com.talk.talk.config.vo.ApiResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

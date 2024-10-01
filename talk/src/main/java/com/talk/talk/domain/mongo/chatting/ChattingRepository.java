@@ -1,4 +1,4 @@
-package com.talk.talk.mongo.chatting;
+package com.talk.talk.domain.mongo.chatting;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 

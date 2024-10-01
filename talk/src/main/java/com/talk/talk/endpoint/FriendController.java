@@ -1,7 +1,7 @@
-package com.talk.talk.controller;
+package com.talk.talk.endpoint;
 
-import com.talk.talk.config.exception.ApiException;
-import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.exception.ServiceException;
+import com.talk.talk.config.exception.ErrorType;
 import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.service.FriendService;
@@ -24,9 +24,6 @@ public class FriendController {
 
     private final FriendService friendService;
 
-    /**
-     * 사용자 조회
-     * */
     @GetMapping("/user/friend/search")
     public ApiResponse<PageResult<FriendSearchResDto>> searchFriendSearchList(FriendSearchReqDto request) {
         request.setUserSeq(CommonUtils.getUserInfo().getUserSeq());
@@ -38,9 +35,6 @@ public class FriendController {
                 .build();
     }
 
-    /**
-     * 친구 목록 조회
-     * */
     @GetMapping("/user/friend/list")
     public ApiResponse<List<FriendListResDto>> selectFriendList() {
         Long userSeq = CommonUtils.getUserInfo().getUserSeq();
@@ -51,24 +45,18 @@ public class FriendController {
                 .build();
     }
 
-    /**
-     * 친구 요청
-     * */
     @PostMapping("/user/friend/request")
     public ApiResponse<FriendRequestResDto> userFriendRequest(@RequestBody @Valid FriendRequestReqDto request) {
 
         request.setMyUserSeq(CommonUtils.getUserInfo().getUserSeq());
         FriendRequestResDto result = friendService.requestFriend(request);
-        if(result == null) throw new ApiException(ExceptionEnum.SYSTEM_ERROR);
+        if(result == null) throw new ServiceException(ErrorType.SYSTEM_ERROR);
 
         return ApiResponse.<FriendRequestResDto>builder()
                 .data(result)
                 .build();
     }
 
-    /**
-     * 친구 삭제
-     * */
     @PostMapping("/user/friend/remove")
     public ApiResponse<Void> userFriendRemove(@RequestBody @Valid FriendRequestReqDto request) {
 

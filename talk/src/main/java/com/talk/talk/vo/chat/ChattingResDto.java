@@ -1,8 +1,8 @@
 package com.talk.talk.vo.chat;
 
-import com.talk.talk.config.socket.vo.ChattingUserInfo;
-import com.talk.talk.config.socket.vo.MessageType;
-import com.talk.talk.mongo.chatting.Chatting;
+import com.talk.talk.vo.socket.ChattingUserInfo;
+import com.talk.talk.vo.type.MessageType;
+import com.talk.talk.domain.mongo.chatting.Chatting;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

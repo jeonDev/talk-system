@@ -1,7 +1,7 @@
-package com.talk.talk.mongo.chatting;
+package com.talk.talk.domain.mongo.chatting;
 
-import com.talk.talk.config.socket.vo.ChattingUserInfo;
-import com.talk.talk.config.socket.vo.MessageType;
+import com.talk.talk.vo.socket.ChattingUserInfo;
+import com.talk.talk.vo.type.MessageType;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 

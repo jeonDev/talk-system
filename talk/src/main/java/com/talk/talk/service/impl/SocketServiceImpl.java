@@ -1,20 +1,17 @@
-package com.talk.talk.config.socket.service;
+package com.talk.talk.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talk.talk.config.jwt.GenerateJwt;
 import com.talk.talk.config.jwt.vo.UserInfo;
-import com.talk.talk.config.socket.vo.ChattingUserInfo;
-import com.talk.talk.config.socket.vo.Message;
-import com.talk.talk.config.socket.vo.MessageType;
-import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
+import com.talk.talk.vo.socket.ChattingUserInfo;
+import com.talk.talk.vo.socket.Message;
+import com.talk.talk.vo.type.MessageType;
+import com.talk.talk.vo.socket.WebSocketSessionInfo;
 import com.talk.talk.domain.commonFile.CommonFile;
 import com.talk.talk.domain.user.User;
-import com.talk.talk.mongo.chatting.Chatting;
-import com.talk.talk.service.ChatService;
-import com.talk.talk.service.CommonService;
-import com.talk.talk.service.RoomService;
-import com.talk.talk.service.UserService;
+import com.talk.talk.domain.mongo.chatting.Chatting;
+import com.talk.talk.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -31,13 +28,14 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class SocketService {
+public class SocketServiceImpl implements SocketService {
 
     private final ChatService chatService;
     private final RoomService roomService;
     private final UserService userService;
     private final CommonService commonService;
     private final GenerateJwt generateJwt;
+    private final ObjectMapper objectMapper;
 
     /** Chatting Send Message */
     public void sendMessage(List<WebSocketSessionInfo> sessions,
@@ -50,7 +48,7 @@ public class SocketService {
                 .map(r -> r.getUser().getUserSeq())
                 .toList();
 
-        // 2. Room Chatting Save (NoSQL - MongoDB) TODO
+        // 2. Room Chatting Save (NoSQL - MongoDB)
         Chatting chatting = chatService.chattingSave(messageInfo);
 
         // 3. Send Msg
@@ -65,9 +63,7 @@ public class SocketService {
                 });
     }
 
-    /**
-     * Chatting Send Image
-     */
+    /** Chatting Send Image */
     public void sendImage(List<WebSocketSessionInfo> sessions,
                           WebSocketSession session,
                           Message<?> messageInfo) throws JsonProcessingException {
@@ -75,8 +71,7 @@ public class SocketService {
         CommonFile commonFile = commonService.selectCommonFile(fileSeq);
         messageInfo.imageDataToMessageData(commonFile.getFileName());
 
-        ObjectMapper mapper = new ObjectMapper();
-        String sendMsg = mapper.writeValueAsString(messageInfo);
+        String sendMsg = objectMapper.writeValueAsString(messageInfo);
         this.sendMessage(sessions,session,messageInfo,sendMsg);
     }
 
@@ -89,7 +84,7 @@ public class SocketService {
                 .map(item -> item.split("="))
                 .collect(Collectors.toMap(item -> item[0], item -> item[1]));
 
-        String refreshToken = (String)cookie.get("refreshToken");
+        String refreshToken = cookie.get("refreshToken");
         String subject = generateJwt.getTokenForSubject(refreshToken);
 
         User user = userService.selectUser(Long.parseLong(subject));
@@ -101,12 +96,10 @@ public class SocketService {
                 .build();
     }
 
-    /**
-     * JSON 메시지 전송
-     * */
+    /** JSON 메시지 전송 */
     public Message<Object> messageToJsonSendMessage(List<WebSocketSessionInfo> sessions,
                                                     WebSocketSession session,
-                                                    String payload) throws JsonProcessingException {
+                                                    String payload) {
         UserInfo userInfo = getSessionUserInfo(sessions, session);
         JSONObject jsonObject = new JSONObject(payload);
 
@@ -144,11 +137,11 @@ public class SocketService {
 
     /** 메시지 타입 체크 */
     private MessageType getMessageType(String messageType) {
-        switch (messageType) {
-            case "MESSAGE" : return MessageType.MESSAGE;
-            case "IMAGE" : return MessageType.IMAGE;
-            default: return MessageType.MESSAGE;
-        }
+        return switch (messageType) {
+            case "MESSAGE" -> MessageType.MESSAGE;
+            case "IMAGE" -> MessageType.IMAGE;
+            default -> MessageType.MESSAGE;
+        };
     }
 
 }

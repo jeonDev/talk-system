@@ -1,7 +1,7 @@
-package com.talk.talk.controller;
+package com.talk.talk.endpoint;
 
-import com.talk.talk.config.exception.ApiException;
-import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.exception.ServiceException;
+import com.talk.talk.config.exception.ErrorType;
 import com.talk.talk.config.utils.StringUtils;
 import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.config.jwt.vo.TokenInfo;
@@ -19,16 +19,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@RestController
 public class LoginController {
 
     private final UserService userService;
 
-    /**
-    * 회원가입
-    * */
     @PostMapping("/login/signup")
     public ApiResponse<SignUpResDto> signUp(@RequestBody @Valid SignUpReqDto request) {
         SignUpResDto result = userService.signUp(request);
@@ -38,9 +35,6 @@ public class LoginController {
                 .build();
     }
 
-    /**
-    * 로그인
-    * */
     @PostMapping("/login")
     public ApiResponse<UserDto> login(@RequestBody @Valid LoginReqDto request, HttpServletResponse response) {
         UserDto result = userService.login(request, response);
@@ -49,12 +43,9 @@ public class LoginController {
                 .build();
     }
 
-    /**
-     * Token 재발급
-     * */
     @PostMapping("/token/reIssue")
-    public ApiResponse<TokenInfo> tokenReIssue(@CookieValue(value = "refreshToken", required = false) String refreshToken) throws ApiException {
-        if(StringUtils.isStringEmptyOrNull(refreshToken)) throw new ApiException(ExceptionEnum.NOT_EXISTS_TOKEN);
+    public ApiResponse<TokenInfo> tokenReIssue(@CookieValue(value = "refreshToken", required = false) String refreshToken) throws ServiceException {
+        if(StringUtils.isStringEmptyOrNull(refreshToken)) throw new ServiceException(ErrorType.NOT_EXISTS_TOKEN);
         TokenInfo tokenInfo = userService.tokenReIssue(refreshToken);
 
         return ApiResponse.<TokenInfo>builder()
@@ -62,9 +53,6 @@ public class LoginController {
                 .build();
     }
 
-    /**
-     * Logout
-     * */
     @PostMapping("/logout")
     public ApiResponse<Void> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("refreshToken", null);
@@ -73,9 +61,7 @@ public class LoginController {
         response.addCookie(cookie);
         return ApiResponse.<Void>builder().build();
     }
-    /**
-     * update User Info
-     * */
+
     @PostMapping("/user/info/update")
     public ApiResponse<UserInfoResDto> userInfoUpdate(@RequestBody UserInfoReqDto request) {
 
@@ -86,12 +72,9 @@ public class LoginController {
                 .build();
     }
 
-    /**
-     * User Info Get
-     * */
     @GetMapping("/user/getUserInfo")
     public ApiResponse<UserInfoResDto> getUserInfo() {
-        UserInfoResDto result = userService.selectUserInfo();
+        UserInfoResDto result = userService.selectMyUserInfo();
 
         return ApiResponse.<UserInfoResDto>builder()
                 .data(result)

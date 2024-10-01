@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-public enum ExceptionEnum {
+public enum ErrorType {
 
     // Login Exception
     NOT_EXISTS_USER("L1", "존재하지 않는 고객입니다."),
@@ -34,14 +34,14 @@ public enum ExceptionEnum {
     private final String code;
     private final String message;
 
-    private ExceptionEnum(String code, String message){
+    ErrorType(String code, String message){
         this.code = code;
         this.message = message;
     }
 
     /** code로 값 추출 */
-    public static ExceptionEnum getMessage(String code) {
-        return Arrays.stream(ExceptionEnum.values())
+    public static ErrorType getMessage(String code) {
+        return Arrays.stream(ErrorType.values())
                 .filter(exceptionEnum -> exceptionEnum.code.equals(code))
                 .findAny()
                 .orElse(SYSTEM_ERROR);

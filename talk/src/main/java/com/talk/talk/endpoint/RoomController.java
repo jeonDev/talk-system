@@ -1,4 +1,4 @@
-package com.talk.talk.controller;
+package com.talk.talk.endpoint;
 
 import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;
@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * 채팅방 관리 Controller
- * */
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -25,9 +22,6 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    /**
-     * 채팅방 초대 (단체)
-     * */
     @PostMapping("/user/room/invite")
     public ApiResponse<RoomInviteResDto> roomInvite(@RequestBody List<RoomInviteReqDto> request) {
         RoomInviteResDto result;
@@ -48,9 +42,6 @@ public class RoomController {
                 .build();
     }
 
-    /**
-     * 채팅방 초대 (개인)
-     * */
     @PostMapping("/user/room/private/invite")
     public ApiResponse<RoomInviteResDto> roomPrivateInvite(@RequestBody RoomInviteReqDto request) {
         Long userSeq = CommonUtils.getUserInfo().getUserSeq();
@@ -61,9 +52,6 @@ public class RoomController {
                 .build();
     }
 
-    /**
-     * 채팅방 조회
-     * */
     @GetMapping("/user/room/list")
     public ApiResponse<List<RoomResList>> selectUserRoomList() {
         Long userSeq = CommonUtils.getUserInfo().getUserSeq();

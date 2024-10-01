@@ -1,4 +1,4 @@
-package com.talk.talk.controller;
+package com.talk.talk.endpoint;
 
 import com.talk.talk.config.vo.ApiResponse;
 import com.talk.talk.service.CommonService;
@@ -19,9 +19,6 @@ public class CommonController {
 
     private final CommonService commonService;
 
-    /**
-     * File Upload
-     * */
     @PostMapping("/user/file/upload")
     public ApiResponse<FileUploadResDto> fileUpload(@RequestPart MultipartFile file) throws IOException {
         FileUploadResDto result = commonService.fileUpload(file);

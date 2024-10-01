@@ -1,11 +1,12 @@
 package com.talk.talk.config.socket;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.talk.talk.config.jwt.vo.UserInfo;
-import com.talk.talk.config.socket.service.SocketService;
-import com.talk.talk.config.socket.vo.Message;
-import com.talk.talk.config.socket.vo.MessageType;
-import com.talk.talk.config.socket.vo.WebSocketSessionInfo;
+import com.talk.talk.service.SocketService;
+import com.talk.talk.vo.socket.Message;
+import com.talk.talk.vo.type.MessageType;
+import com.talk.talk.vo.socket.WebSocketSessionInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class ChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws JsonProcessingException {
         // 1. Message Builder
         Message<Object> messageInfo = socketService.messageToJsonSendMessage(sessions, session, message.getPayload());
 
@@ -55,7 +56,7 @@ public class ChatHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         log.info(session + " Client Connection Closed : " + status);
         sessions.stream()
                 .filter(item -> session.equals(item.getWebSocketSession()))

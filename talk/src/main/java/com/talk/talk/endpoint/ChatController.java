@@ -1,4 +1,4 @@
-package com.talk.talk.controller;
+package com.talk.talk.endpoint;
 
 import com.talk.talk.config.utils.CommonUtils;
 import com.talk.talk.config.vo.ApiResponse;

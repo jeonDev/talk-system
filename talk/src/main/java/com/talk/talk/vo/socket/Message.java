@@ -1,5 +1,6 @@
-package com.talk.talk.config.socket.vo;
+package com.talk.talk.vo.socket;
 
+import com.talk.talk.vo.type.MessageType;
 import lombok.*;
 
 @Getter

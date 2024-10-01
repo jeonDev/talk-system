@@ -10,19 +10,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FilterConfig {
 
-    @Autowired
-    private GenerateJwt generateJwt;
-
     @Bean
     public FilterRegistrationBean<RequestFilter> requestFilter() {
-        FilterRegistrationBean<RequestFilter> filterRegistrationBean = new FilterRegistrationBean<RequestFilter>(new RequestFilter());
+        FilterRegistrationBean<RequestFilter> filterRegistrationBean = new FilterRegistrationBean<>(new RequestFilter());
         filterRegistrationBean.setOrder(0);
         return filterRegistrationBean;
     }
 
     @Bean
-    public FilterRegistrationBean<JwtFilter> jwtFilter() {
-        FilterRegistrationBean<JwtFilter> filterRegistrationBean = new FilterRegistrationBean<JwtFilter>(new JwtFilter(generateJwt));
+    public FilterRegistrationBean<JwtFilter> jwtFilter(GenerateJwt generateJwt) {
+        FilterRegistrationBean<JwtFilter> filterRegistrationBean = new FilterRegistrationBean<>(new JwtFilter(generateJwt));
         filterRegistrationBean.addUrlPatterns("/user/*");
         filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST);
         filterRegistrationBean.setOrder(1);

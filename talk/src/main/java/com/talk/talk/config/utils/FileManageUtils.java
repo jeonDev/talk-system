@@ -1,7 +1,7 @@
 package com.talk.talk.config.utils;
 
-import com.talk.talk.config.exception.ApiException;
-import com.talk.talk.config.exception.ExceptionEnum;
+import com.talk.talk.config.exception.ServiceException;
+import com.talk.talk.config.exception.ErrorType;
 import com.talk.talk.config.vo.FileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ public class FileManageUtils implements FileUtils {
     public FileInfo upload(MultipartFile file) throws IOException {
 
         // 1. 파일 존재 여부
-        if(file.isEmpty()) throw new ApiException(ExceptionEnum.COMMON_FILE_NOT_EXISTS);
+        if(file.isEmpty()) throw new ServiceException(ErrorType.COMMON_FILE_NOT_EXISTS);
 
         String originFileName = file.getOriginalFilename();
         String contentType = file.getContentType();
@@ -37,7 +37,7 @@ public class FileManageUtils implements FileUtils {
         log.debug("originFileName : {} contentType : {} fileExt : {} uuid : {} fileName : {}", originFileName, contentType, fileExt, uuid, fileName);
 
         // 2. File 확장자 체크 image 로 시작하는 파일만.
-        if(!contentType.startsWith("image")) throw new ApiException(ExceptionEnum.COMMON_FILE_NOT_AllOWED_EXTENSION);
+        if(!contentType.startsWith("image")) throw new ServiceException(ErrorType.COMMON_FILE_NOT_AllOWED_EXTENSION);
 
         // 3. File 저장
         File saveFile = new File(uploadPath + fileName);
