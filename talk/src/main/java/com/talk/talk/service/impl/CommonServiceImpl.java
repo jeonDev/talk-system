@@ -1,6 +1,6 @@
 package com.talk.talk.service.impl;
 
-import com.talk.talk.config.utils.FileUtils;
+import com.talk.talk.service.FileService;
 import com.talk.talk.config.vo.FileInfo;
 import com.talk.talk.domain.commonFile.CommonFile;
 import com.talk.talk.domain.commonFile.CommonFileRepository;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CommonServiceImpl implements CommonService {
 
-    private final FileUtils fileManageUtils;
+    private final FileService fileManageUtils;
     private final CommonFileRepository commonFileRepository;
 
     @Override

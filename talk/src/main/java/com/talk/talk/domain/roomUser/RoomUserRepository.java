@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomUserRepository extends JpaRepository<RoomUser, RoomUserId> {
-    List<RoomUser> findByRoom(Room room);
-
     @Query(
             value = "SELECT ru.room.roomSeq" +
                     "  FROM RoomUser ru" +

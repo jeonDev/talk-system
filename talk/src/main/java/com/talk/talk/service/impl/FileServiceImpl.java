@@ -1,27 +1,27 @@
-package com.talk.talk.config.utils;
+package com.talk.talk.service.impl;
 
 import com.talk.talk.config.exception.ServiceException;
 import com.talk.talk.config.exception.ErrorType;
 import com.talk.talk.config.vo.FileInfo;
+import com.talk.talk.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Component
+@Service
 @Slf4j
-public class FileManageUtils implements FileUtils {
+public class FileServiceImpl implements FileService {
+    private final String uploadPath;
 
-    @Value("${file.upload-path}")
-    private String uploadPath;
+    public FileServiceImpl(@Value("${file.upload-path}") String uploadPath) {
+        this.uploadPath = uploadPath;
+    }
 
-    /**
-     * File Upload
-     */
     @Override
     public FileInfo upload(MultipartFile file) throws IOException {
 
@@ -53,11 +53,8 @@ public class FileManageUtils implements FileUtils {
                 .build();
     }
 
-    /**
-     * File Delete
-     */
     @Override
-    public boolean remove(String fileName) throws IOException{
+    public boolean remove(String fileName) {
         boolean isDelete = false;
 
         File file = new File(uploadPath + fileName);
